@@ -15,57 +15,54 @@ int main() {
 
     /*Executa programa até que usuário entre com uma linha vazia*/
     while ((fgets(linha, sizeof(linha), stdin)) != NULL) {
-        
+
         /*Armazena strings necessárias para a 
         execução do comando inserido pelo usuário*/
-        aplicacao = strtok(linha, " \n");
+        aplicacao = strtok(linha, " ");
+        if(strcmp(aplicacao, "insere") && strcmp(aplicacao, "procura")) /*Se a aplicação não for inserção ou busca*/
+            break;
+
         nomeBase = strtok(NULL, " \n");
         textoPrefixo = strtok(NULL, " \n");
 
-        if (strcmp(aplicacao, "insere") == 0) {
+            if (strcmp(aplicacao, "insere") == 0) {
+                /*Se a aplicação for inserção, usa o arquivo base (ou cria um novo, 
+                caso necessário) correspondente ao nome fornecido pelo usuário na 
+                entrada e insere nele as palavras disponíveis no arquivo texto. 
+                Caso não encontre o arquivo texto, retorna erro na saída stderr.*/
+                base = fopen(nomeBase, "w");
+                texto = fopen(textoPrefixo, "r");
 
-            /*Se a aplicação for inserção, usa o arquivo base (ou cria um novo, 
-            caso necessário) correspondente ao nome fornecido pelo usuário na 
-            entrada e insere nele as palavras disponíveis no arquivo texto. 
-            Caso não encontre o arquivo texto, retorna erro na saída stderr.*/
-            base = fopen(nomeBase, "w");
-            texto = fopen(textoPrefixo, "r");
+                if (texto)
+                    insereTextoNaTrie(base, texto, textoPrefixo, raizTrie);
 
-            if (texto)
-                insereTextoNaTrie(base, texto, textoPrefixo, raizTrie);
-
-            else
-                fprintf(stderr, "Arquivo texto não encontrado.\n");
-            
-            fclose(texto);
-            fclose(base);
-
-        } else if (strcmp(aplicacao, "procura") == 0) {
-
-            /*Se a aplicação for procura, busca no arquivo base fornecido as 
-            palavras que iniciem com o prefixo e as imprime (sucedidas pelo 
-            nome do arquivo que as originou). Caso não encontre o arquivo 
-            base, retorna erro na saída stderr.*/
-            base = fopen(nomeBase, "r");
-
-            if (base)
-                procuraPalavrasPorPrefixo(base, textoPrefixo);
+                else
+                    fprintf(stderr, "Arquivo texto não encontrado.\n");
                 
-            else
-                fprintf(stderr, "Arquivo base não encontrado.\n");
-            
-            fclose(base);
+                fclose(texto);
+                fclose(base);
 
-        } else {
-            /*Se formato de entrada inserido estiver incorreto, imprime na saída 
-            de erros o formato requerido para correto funcionamento do programa*/
-            fprintf(stderr, "Formato de entrada requerido para inserção:\ninsere arquivoBase arquivoTexto\n\n");
-            fprintf(stderr, "Formato de entrada requerido para busca:\nprocura arquivoBase prefixo\n");
+            } else if (strcmp(aplicacao, "procura") == 0) {
+
+                /*Se a aplicação for procura, busca no arquivo base fornecido as 
+                palavras que iniciem com o prefixo e as imprime (sucedidas pelo 
+                nome do arquivo que as originou). Caso não encontre o arquivo 
+                base, retorna erro na saída stderr.*/
+                base = fopen(nomeBase, "r");
+
+                if (base)
+                    procuraPalavrasPorPrefixo(base, textoPrefixo);
+                
+                fclose(base);
+
+            } else {
+                /*Se formato de entrada inserido estiver incorreto, imprime na saída 
+                de erros o formato requerido para correto funcionamento do programa*/
+                fprintf(stderr, "Formato de entrada requerido para inserção:\ninsere arquivoBase arquivoTexto\n\n");
+                fprintf(stderr, "Formato de entrada requerido para busca:\nprocura arquivoBase prefixo\n");
+            }
         }
-    }
-    
+    /*Libera memória alocada para a estrutura trie*/
     destroiTrie(raizTrie);
-
     return 0;
 }
-

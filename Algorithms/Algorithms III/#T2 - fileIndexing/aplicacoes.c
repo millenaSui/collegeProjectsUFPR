@@ -39,7 +39,7 @@ void escreveTrieNaBase(FILE *base, nodo *atual, char palavra[], int cont) {
             fprintf(base, "%s", palavra);
 
             while (nomesArquivos != NULL) {
-                fprintf(base, "[%s]", nomesArquivos);
+                fprintf(base, "%s", nomesArquivos);
                 nomesArquivos = strtok(NULL, ",");
             }
             fprintf(base, "\n");
@@ -56,7 +56,7 @@ void escreveTrieNaBase(FILE *base, nodo *atual, char palavra[], int cont) {
 
 /*Procura o caractere fornecido em uma base de dados que 
 contém a estrutura trie (procura caractere entre simbolo e 
-faz um contador para verificar cada palavra encontrada)*/
+faz um contador para verificar cada palavra encontrada).*/
 void procuraPalavrasPorPrefixo(FILE *base, char *prefixo) {
     char linha[100];
     char *arquivo;

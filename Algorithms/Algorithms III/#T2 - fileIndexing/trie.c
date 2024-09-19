@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "trie.h"
+
+#define TAM_MAX_NOME_ARQ 256
 
 /*Inicializa uma nova trie alocando memória para 
 o nodo raiz e definindo um filho para cada letra 
@@ -17,46 +20,81 @@ nodo *inicializaTrie() {
     return raiz;
 }
 
+/*Função auxiliar para o processo de inserção de nomes
+de arquivos ao final de cada caractere das palavras.*/
+int contemNomeArquivo(const char *nomesArquivos, const char *nomeArquivo) {
+    const char *ptr = strstr(nomesArquivos, nomeArquivo);
+    return (ptr != NULL);
+}
+
+/*Insere uma palavra válida (com mais de quatro caracteres que
+correspondam à letras maiúsculas ou minúsculas) na trie.*/
 void insereChave(nodo *raiz, char *chave, char *nomeArqTexto) {
-    nodo* atual = raiz;
-    int tam = strlen(chave);
-    int índiceCaractere; //Índice do caractere a ser inserido no vetor filhos
+    nodo *atual = raiz;
+    int indiceCaractere, tam;
+    char *palavra = chave;
+
+    /*Remove da string caracteres que 
+    não sejam letras maiúsculas ou 
+    minúsculas (não acentuadas)*/
+    int k = 0;
+    for (int i = 0; palavra[i] != '\0'; i++) {
+        if (isalpha(palavra[i]))
+            palavra[k++] = palavra[i];
+    }
+    palavra[k] = '\0';
+    tam = strlen(palavra);
 
     /*Faz a inserção de caracteres e (se 
     necessário) a criação de novos nodos*/
     for (int i = 0; i < tam; i++) {
-        
+
         /*Transforma um caractere ASCII da 
         palavra em índice de vetor filhos*/
-        if (chave[i] >= 'A' && chave[i] <= 'Z')
-            índiceCaractere = chave[i] - 65;
-        else if (chave[i] >= 'a' && chave[i] <= 'z')
-            índiceCaractere = chave[i] - 71;
-        else
-            índiceCaractere = -1;
+        if (palavra[i] >= 'A' && palavra[i] <= 'Z')
+            indiceCaractere = palavra[i] - 65;
+        else if (chave[i] >= 'a' && palavra[i] <= 'z')
+            indiceCaractere = palavra[i] - 71;
 
-        /*Se o caractere recebido é uma letra válida, insere-a 
+        /*Se o caractere recebido é uma letra válida, e a que 
+        o origina tem mais de 4 símbolos (letras), insere-a 
         no nodo correspondente de acordo com seu índice*/
-        if (índiceCaractere != -1 && atual) {
-            if (!atual->filhos[índiceCaractere]) {
-                atual->filhos[índiceCaractere] = inicializaTrie();
-                atual->filhos[índiceCaractere]->caractere = chave[i];
+        if (tam >= 4 && atual) {
+            if (!atual->filhos[indiceCaractere]) {
+                atual->filhos[indiceCaractere] = inicializaTrie();
+                atual->filhos[indiceCaractere]->caractere = chave[i];
             }
-            atual = atual->filhos[índiceCaractere];
+            atual = atual->filhos[indiceCaractere];
 
-            /*Se for o último caractere da palavra, adiciona o nome do arquivo*/
             if (i == tam - 1) {
+                /*Se for o último caractere da palavra, 
+                adiciona o nome do arquivo*/
                 if (atual->nomeArquivo == NULL) {
-                    atual->nomeArquivo = (char *)malloc(strlen(nomeArqTexto) + 1);
-                    strcpy(atual->nomeArquivo, nomeArqTexto);
+                    size_t tamAux = strlen(nomeArqTexto);
+                    if (tamAux < TAM_MAX_NOME_ARQ - 3) { 
+                        atual->nomeArquivo = (char *)malloc(tamAux + 3);  
+                        
+                        if (atual->nomeArquivo != NULL)
+                            sprintf(atual->nomeArquivo, "[%s]", nomeArqTexto);
+                        else
+                            fprintf(stderr, "Falha na alocação de memória para nomeArquivo.\n");
+                    } else
+                        fprintf(stderr, "O nome do arquivo é muito longo para ser armazenado.\n");
                 
                 } else {
-                    if (!strstr(atual->nomeArquivo, nomeArqTexto)) {
+
+                    /*Verifica se o nome do arquivo já está na lista*/
+                    if (!contemNomeArquivo(atual->nomeArquivo, nomeArqTexto)) {
                         size_t tamNomeArquivo = strlen(atual->nomeArquivo);
-                        size_t novoTam = tamNomeArquivo + strlen(nomeArqTexto) + 2;
+                        size_t novoTam = tamNomeArquivo + strlen(nomeArqTexto) + 3;
                         atual->nomeArquivo = (char *)realloc(atual->nomeArquivo, novoTam);
-                        strcat(atual->nomeArquivo, ",");
-                        strcat(atual->nomeArquivo, nomeArqTexto);
+                        if (atual->nomeArquivo != NULL) {
+                            strcat(atual->nomeArquivo, "[");
+                            strcat(atual->nomeArquivo, nomeArqTexto);
+                            strcat(atual->nomeArquivo, "]");
+                        } else {
+                            fprintf(stderr, "Falha na realocação de memória para nomeArquivo.\n");
+                        }
                     }
                 }
             }
@@ -64,13 +102,16 @@ void insereChave(nodo *raiz, char *chave, char *nomeArqTexto) {
     }
 }
 
-/*Libera a memória alocada para a trie.*/
+/*Libera a memória alocada percorrendo recursivamente 
+todos os nodos da trie e liberar a memória alocada 
+para eles e para suas respectivas strings nomeArquivo.*/
 void destroiTrie(nodo *raiz) {
-    if (raiz == NULL) return;
-    
-    for (int i = 0; i < 52; i++)
-        destroiTrie(raiz->filhos[i]);
-
-    free(raiz->nomeArquivo);
-    free(raiz);
+    if (raiz) {
+        for (int i = 0; i < 52; i++) {
+            if (raiz->filhos[i] != NULL)
+                destroiTrie(raiz->filhos[i]);
+        }
+        free(raiz->nomeArquivo);
+        free(raiz);
+    }
 }

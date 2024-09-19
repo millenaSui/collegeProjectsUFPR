@@ -9,8 +9,9 @@ void insereTextoNaTrie(FILE *base, FILE *texto, char *nomeArqTexto, nodo *raiz);
 arquivo base de maneira recursiva.*/
 void escreveTrieNaBase(FILE *base, nodo *atual, char palavra[], int cont);
 
-/*Procura a palavra fornecida em uma base de dados que 
-contém uma ou mais estruturas de dados trie.*/
+/*Procura o caractere fornecido em uma base de dados que 
+contém a estrutura trie (procura caractere entre simbolo e 
+faz um contador para verificar cada palavra encontrada).*/
 void procuraPalavrasPorPrefixo(FILE *base, char *prefixo);
 
 #endif

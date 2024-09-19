@@ -14,7 +14,12 @@ o nodo raiz e definindo um filho para cada letra
 inicial possível das palavras.*/
 nodo *inicializaTrie();
 
-/*Insere uma palavra na trie.*/
+/*Função auxiliar para o processo de inserção de nomes
+de arquivos ao final de cada caractere das palavras.*/
+int contemNomeArquivo(const char *nomesArquivos, const char *nomeArquivo);
+
+/*Insere uma palavra válida (com mais de quatro caracteres que
+correspondam à letras maiúsculas ou minúsculas) na trie.*/
 void insereChave(nodo *raiz, char *chave, char *nomeArqTexto);
 
 /*Libera a memória alocada para a trie.*/
