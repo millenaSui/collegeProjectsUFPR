@@ -62,7 +62,7 @@ public class FrameFlowLayout extends JFrame implements ActionListener {
     // This is the main method that creates a new
     public static void main(String args[]) {
         JFrame janela = new FrameFlowLayout();
-        janela.show();
+        janela.setVisible(true);
         // This is a simple way to close the window 
         // when the user clicks the close button.
         WindowListener x = new WindowAdapter() {

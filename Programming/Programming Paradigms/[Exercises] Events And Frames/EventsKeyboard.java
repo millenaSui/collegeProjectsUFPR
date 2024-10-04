@@ -54,7 +54,7 @@ public class EventsKeyboard extends JFrame implements KeyListener {
 
     private void setLines2and3( KeyEvent e ){
             line2 = "This key is " + ( e.isActionKey() ? "" : "not " ) + "an action key";
-            String temp = KeyEvent.getKeyModifiersText( e.getModifiers() );
+            String temp = KeyEvent.getModifiersExText( e.getModifiersEx() );
             line3 = "Modifier keys pressed: " + ( temp.equals( "" ) ? "none" : temp );
             textArea.setText(
             line1 + "\n" + line2 + "\n" + line3 + "\n" );

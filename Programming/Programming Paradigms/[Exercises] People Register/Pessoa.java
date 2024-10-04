@@ -1,7 +1,8 @@
-/* Criar classe Pessoa com os atributos nome, email, 
-endereço e telefone e os métodos de acesso*/
-
 public class Pessoa {
+    /* 
+    Criar classe Pessoa com os atributos nome, email, 
+    endereço e telefone e os métodos de acesso
+    */
     private String nome;
     private String email;
     private String endereco;

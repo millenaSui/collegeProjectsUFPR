@@ -1,7 +1,8 @@
-/* Criar uma classe Tela que leia os dados de uma pessoa, crie
-o objeto p e o insira em um array */
-
 public class Tela {
+    /* 
+    Criar uma classe Tela que leia os dados de uma pessoa, crie
+    o objeto p e o insira em um array 
+    */
     public static void main(String[] args) {
         // Create an array of people
         Pessoa[] pessoas = new Pessoa[1];
