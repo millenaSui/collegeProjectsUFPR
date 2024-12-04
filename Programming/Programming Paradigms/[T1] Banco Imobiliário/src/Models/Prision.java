@@ -1,4 +1,7 @@
+package Models;
+
 import java.util.List;
+import java.util.ArrayList;
 
 public class Prision extends Field {
     private List<Player> arrestedPlayers;

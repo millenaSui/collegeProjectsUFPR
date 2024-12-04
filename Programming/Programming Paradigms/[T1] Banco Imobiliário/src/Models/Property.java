@@ -1,3 +1,5 @@
+package Models;
+
 public class Property extends Field {
     private int buyValue;
     private int rentValue;

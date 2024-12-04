@@ -1,3 +1,5 @@
+package Models;
+
 public abstract class Field {
     private String appearance;
     private String type;
