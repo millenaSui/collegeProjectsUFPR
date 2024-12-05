@@ -1,7 +1,7 @@
 package Controllers;
 
 // Importing libraries
-
+import java.util.List;
 
 // Importing models
 import Models.GameBoard;
@@ -16,9 +16,9 @@ public class Round {
     private int currentPlayer;
 
     // Constructor
-    public Round(GameBoard gameBoard, Player[] players) {
+    public Round(GameBoard gameBoard, List<Player> players) {
         this.gameBoard = gameBoard;
-        this.players = players;
+        this.players = players.toArray(new Player[0]);
         this.dice = new Dice(); // Assuming you need to pass an empty list of sprites
         this.currentPlayer = 0;
     }

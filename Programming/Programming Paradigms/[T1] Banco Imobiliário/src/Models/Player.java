@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 public class Player {
     private String name;
+    private String color;
+    private String appearance;
+    private int[] initialPosition;
     private int money;
     private int position;
     private List<Property> properties;
@@ -13,8 +16,10 @@ public class Player {
     private boolean inDetention;
 
     // Constructor
-    public Player(String nome) {
+    public Player(String nome, String color, String appearance) {
         this.name = nome;
+        this.color = color;
+        this.appearance = appearance;
         this.money = 1000;
         this.position = 0;
         this.properties = new ArrayList<>();
@@ -26,6 +31,10 @@ public class Player {
     // Getters and Setters
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
+    public String getColor() {return color;}
+    public void setColor(String color) {this.color = color;}
+    public String getAppearance() {return appearance;}
+    public void setAppearance(String appearance) {this.appearance = appearance;}
     public int getMoney() {return money;}
     public void setMoney(int money) {this.money = money;}
     public int getPosition() {return position;}
