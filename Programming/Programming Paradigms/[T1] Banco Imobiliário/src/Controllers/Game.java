@@ -9,6 +9,7 @@ import Models.ChanceCardsDeck;
 import Models.ChanceCard;
 
 import Views.GameBoardView;
+import Views.DiceView;
 import Models.Player;
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +87,9 @@ public class Game implements MenuCallback {
         for (int i = 0; i < gameBoard.getPlayers().size(); i++) {
             gameBoardView.addPlayer(gameBoard.getPlayers().get(i));
         }
-        
+        DiceView diceView = new DiceView(dice);
+        diceView.addToBoard(gameBoardView.getPanel());
+        diceView.exhibit(dice, dice.getValue());
         // Adicione lógica adicional de início do jogo
     }
 
