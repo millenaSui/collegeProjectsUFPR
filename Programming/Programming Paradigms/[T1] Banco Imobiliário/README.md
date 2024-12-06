@@ -7,7 +7,7 @@ O presente projeto trata-se de um **Banco Imobiliário desenvolvido em linguagem
 Foram selecionados quatro padrões de projetos para a aplicação no trabalho, sendo eles: 
 - Padrão Model-View-Controller (arquitetura de software)
 - Padrões GoF 
-    - Abstract Factory (criacional)
+    - Singleton (criacional)
     - Mediator, Memento e Observer (comportamentais) 
     - Decorator (estrutural)
 - Padrões GRASP 
@@ -23,8 +23,8 @@ A aplicação do padrão em questão se deu através da estrutura de diretórios
 ```
 bancoImobiliario
 │   README.md
-│   Main.java    
 └───src
+│   Main.java    
 │   │
 │   └───Content
 │   │
