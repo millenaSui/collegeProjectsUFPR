@@ -7,8 +7,8 @@ public class Prision extends Field {
     private List<Player> arrestedPlayers;
 
     // Constructor
-    public Prision(String appearance, String type, List<Player> arrestedPlayers) {
-        super(appearance, type);
+    public Prision(int[] position, List<Player> arrestedPlayers) {
+        super(position);
         this.arrestedPlayers = new ArrayList<Player>();
     }
 

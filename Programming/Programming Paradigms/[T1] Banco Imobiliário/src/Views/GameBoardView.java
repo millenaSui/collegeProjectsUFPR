@@ -17,7 +17,7 @@ public class GameBoardView {
     }
 
     public GameBoardView(GameBoard gameBoard) {
-        JFrame frame = new JFrame("Game Board");
+        JFrame frame = new JFrame("Monopoly Valley");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1920, 1080);
 

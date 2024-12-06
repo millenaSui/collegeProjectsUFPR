@@ -6,8 +6,8 @@ public class Property extends Field {
     private Player owner;
 
     // Constructor
-    public Property(String appearance, String type, int buyValue, int rentValue) {
-        super(appearance, type);
+    public Property(int[] position, int buyValue, int rentValue) {
+        super(position);
         this.buyValue = buyValue;
         this.rentValue = rentValue;
         this.owner = null;

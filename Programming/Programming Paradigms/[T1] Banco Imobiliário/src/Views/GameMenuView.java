@@ -33,10 +33,11 @@ public class GameMenuView {
         startButton.setBorderPainted(false);
         startButton.setFocusPainted(false);
         startButton.setOpaque(false);
+        startButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Change cursor to hand
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                callback.onMenuOptionSelected(1); // Informa o controlador
+            callback.onMenuOptionSelected(1); // Informa o controlador
             }
         });
 
@@ -46,6 +47,7 @@ public class GameMenuView {
         loadButton.setBorderPainted(false);
         loadButton.setFocusPainted(false);
         loadButton.setOpaque(false);
+        loadButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Change cursor to hand
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,6 +61,7 @@ public class GameMenuView {
         exitButton.setBorderPainted(false);
         exitButton.setFocusPainted(false);
         exitButton.setOpaque(false);
+        exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Change cursor to hand
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

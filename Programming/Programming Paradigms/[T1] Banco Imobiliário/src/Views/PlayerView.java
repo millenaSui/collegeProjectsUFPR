@@ -13,6 +13,7 @@ import java.awt.Container;
 
 public class PlayerView {
     private JPanel panel;
+    private static int playerCount = 0; // Static counter to keep track of the number of players
 
     public JPanel getPanel() {
         return panel;
@@ -35,13 +36,27 @@ public class PlayerView {
         panel.setPreferredSize(new Dimension(100, 100));
     }
 
-    public void exhibitSelectionCharacterScreen() {
-        // Implementação da tela de seleção de personagem
-    }
-
     public void addToBoard(Container board) {
         board.setLayout(null); // Use absolute positioning
-        panel.setBounds(board.getWidth() - 190, board.getHeight() - 210, 100, 100); // Initial position
+        int boardWidth = board.getWidth();
+        int boardHeight = board.getHeight();
+
+        int playersPerRow = 2; // Number of players per row
+        int playerSize = 90; // Size of each player panel
+        int spacing = 60; // Espaçamento adicional entre os jogadores
+        int xOffset = boardWidth - ((playerCount % playersPerRow) + 1) * (playerSize - spacing); // Calculate x position
+        int yOffset = boardHeight - ((playerCount / playersPerRow) + 1) * (playerSize - spacing); // Calculate y position
+
+        // Adjust positions to form a square pattern
+        xOffset -= (playerCount / playersPerRow) * playerSize / 2;
+        yOffset += (playerCount % playersPerRow) * playerSize / 2;
+
+        // Move characters 10 pixels up
+        yOffset -= 210;
+        xOffset -= 160;
+
+        panel.setBounds(xOffset, yOffset, playerSize, playerSize); // Set position based on player count
         board.add(panel);
+        playerCount++; // Increment player count
     }
 }

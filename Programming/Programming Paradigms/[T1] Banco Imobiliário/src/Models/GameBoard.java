@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.List;
 
 public class GameBoard {
-    private static GameBoard instance; // Instância única da classe
+    private static GameBoard instance = null; // Instância única da classe
     private String appearance;
     private List<Player> players;
     private Field[] fields;
@@ -25,8 +25,8 @@ public class GameBoard {
     // Getters and Setters
     public String getAppearance() {return appearance;}
     public void setAppearance(String appearance) {this.appearance = appearance;}
-    public Field getFields(int position) {return fields[position];}
-    public void setFields(int position, Field field) {this.fields[position] = field;}
+    public Field getField(int position) {return fields[position];}
+    public void setField(int position, Field field) {this.fields[position] = field;}
     public List<Player> getPlayers() {return players;}
     public void setPlayers(List<Player> players) {this.players = players;}
 

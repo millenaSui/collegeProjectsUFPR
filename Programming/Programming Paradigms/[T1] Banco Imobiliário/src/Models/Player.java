@@ -7,7 +7,7 @@ public class Player {
     private String name;
     private String appearance;
     private int money;
-    private int position;
+    private Field position;
     private List<Property> properties;
     private boolean isBankrupt;
     private boolean inJail;
@@ -18,7 +18,7 @@ public class Player {
         this.name = name;
         this.appearance = appearance;
         this.money = 1000;
-        this.position = 0;
+        this.position = null;
         this.properties = new ArrayList<>();
         this.isBankrupt = false;
         this.inJail = false;
@@ -32,8 +32,8 @@ public class Player {
     public void setAppearance(String appearance) {this.appearance = appearance;}
     public int getMoney() {return money;}
     public void setMoney(int money) {this.money = money;}
-    public int getPosition() {return position;}
-    public void setPosition(int position) {this.position = position;}
+    public Field getPosition() {return position;}
+    public void setPosition(Field position) {this.position = position;}
     public List<Property> getProperties() {return properties;}
     public void setProperties(List<Property> properties) {this.properties = properties;}
     public boolean getIsBankrupt() {return isBankrupt;}
