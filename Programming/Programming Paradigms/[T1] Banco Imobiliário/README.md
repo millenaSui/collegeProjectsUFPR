@@ -39,13 +39,13 @@ bancoImobiliario
 
 Os objetivos para as implementações dos padrões GoF selecionados são: 
 
-- **Criacionais**
-    - **Abstract Factory:** Possibilitar métodos de criação de famílias de objetos relacionados (ou com dependências) se utilizando de uma única interface;  
+- **Criacional**
+    - **Singleton:** Garantir declaração única e acesso global ao tabuleiro do jogo;
 - **Comportamentais**
     - **Mediator:** Seguir as boas práticas de desacoplamento e possibilitar que possíveis alterações em classes sejam feitas sem que as suas relações sejam afetadas;
     - **Memento:** Possibilitar a manutenção (save) e retomada (load) de estado do jogo, garantindo que, ao interromper a partida, não sejam perdidos os dados do momento de parada;
     - **Observer:** Facilitar o intermédio entre a parte operacional do jogo e a parte de interface, estabelecendo princípios para a comunicação entre elas;
-- **Estruturais**
+- **Estrutural**
     - **Decorator:** Possibilitar a inserção e remoção de responsabilidades e comportamentos em objetos individuais de forma dinamica (enquanto ocorre o fluxo do jogo);
 
 ### Padrões General Responsibility Assignment Software Patterns (GRASP)
