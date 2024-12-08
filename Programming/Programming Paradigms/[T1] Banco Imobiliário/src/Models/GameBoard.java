@@ -36,4 +36,11 @@ public class GameBoard {
         int index = random.nextInt(appearance.length);
         return appearance[index];
     }
+
+    // Método para mover jogador
+    public void movePlayer(Player player, int steps) {
+        int currentPosition = player.getPosition();
+        int newPosition = (currentPosition + steps) % fields.length;
+        player.setPosition(newPosition);
+    }
 }

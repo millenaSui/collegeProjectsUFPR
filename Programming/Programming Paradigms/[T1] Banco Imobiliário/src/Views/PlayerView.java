@@ -59,4 +59,21 @@ public class PlayerView {
         board.add(panel);
         playerCount++; // Increment player count
     }
+
+    public void updatePosition(Player player, int steps) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000); // Delay of 1 second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            int currentX = panel.getX();
+            int currentY = panel.getY();
+            
+            int newX = currentX - (steps * 170); // Atualiza a posição horizontalmente
+            int newY = currentY; // Mantém a posição vertical
+        
+            panel.setBounds(newX, newY, panel.getWidth(), panel.getHeight());
+        }).start();
+    }
 }

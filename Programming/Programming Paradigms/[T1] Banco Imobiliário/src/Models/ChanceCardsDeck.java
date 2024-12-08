@@ -9,13 +9,11 @@ public class ChanceCardsDeck extends Field {
 
     // Constructor
     public ChanceCardsDeck() {
-        super(new int[]{1, 5, 11, 15, 20, 24});
+        super("Chance Cards Deck");
         this.chanceCardsDeck = new ArrayList<ChanceCard>();
     }
     
     // Getters and Setters
-    public int[] getPosition() {return super.getPosition();}
-    public void setPosition(int[] position) {super.setPosition(position);}
     public List<ChanceCard> getChanceCardsDeck() {return chanceCardsDeck;}
     public void setChanceCardsDeck(List<ChanceCard> chanceCardsDeck) {this.chanceCardsDeck = chanceCardsDeck;}
 

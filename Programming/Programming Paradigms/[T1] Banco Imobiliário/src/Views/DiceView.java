@@ -1,19 +1,18 @@
 package Views;
 
 import Models.Dice;
+
 import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class DiceView {
     private JPanel panel;
-    private boolean showingFinalImage = false; // Flag to track the final image state
-    private BufferedImage diceImage = null; // BufferedImage to hold the current dice image
+    private boolean showingFinalImage = false; // Flag para indicar o estado atual da imagem final
+    private BufferedImage diceImage = null; // Armazena a imagem atual do dado
 
     public JPanel getPanel() {
         return panel;
@@ -34,53 +33,37 @@ public class DiceView {
             }
         };
 
-        this.panel.setOpaque(false); // Ensure the panel itself is transparent
+        this.panel.setOpaque(false);
         panel.setPreferredSize(new Dimension(100, 100));
-
-        // Add KeyListener to handle the Enter key press
-        this.panel.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) { // Check if the key is Enter
-                    panel.removeAll(); // Clear all components from the panel
-                    diceImage = null; // Clear the dice image
-                    panel.revalidate();
-                    panel.repaint();
-                    showingFinalImage = false; // Reset the flag
-                }
-            }
-        });
-
-        this.panel.setFocusable(true); // Make sure the panel can receive key events
+        this.panel.setFocusable(true); // Torna o painel focável
     }
 
     public void addToBoard(Container board) {
-        board.setLayout(new BorderLayout()); // Use BorderLayout to fill the entire board
-        panel.setPreferredSize(new Dimension(board.getWidth(), board.getHeight())); // Set panel size to board size
-        board.add(panel, BorderLayout.CENTER); // Add panel to the center of the board
+        board.setLayout(new BorderLayout()); // Usa BorderLayout para preencher o espaço
+        panel.setPreferredSize(new Dimension(board.getWidth(), board.getHeight())); // Ajusta o tamanho
+        board.add(panel, BorderLayout.CENTER); // Adiciona ao centro do tabuleiro
     }
 
     public void exhibit(Dice dice, int value) {
-        Timer timer = new Timer(50, null); // Timer interval set to 50 milliseconds for smoother transitions
+        Timer timer = new Timer(50, null); // Timer para animação (50 ms de intervalo)
         long startTime = System.currentTimeMillis();
 
-        // Animation: Cycle through dice images for 3 seconds
         timer.addActionListener(e -> {
             long elapsedTime = System.currentTimeMillis() - startTime;
-            if (elapsedTime < 3000) { // Run for 3 seconds
-                int frameIndex = (int) (elapsedTime / 60) % 6 + 1; // Cycle through 1 to 6 images
+            if (elapsedTime < 3000) { // Exibe a animação por 3 segundos
+                int frameIndex = (int) (elapsedTime / 60) % 6 + 1; // Cicla pelas imagens do dado
                 try {
                     diceImage = ImageIO.read(new File("./Content/Dice/Dice" + frameIndex + ".png"));
-                    panel.repaint(); // Trigger a repaint to show the updated image
+                    panel.repaint();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-            } else { // Stop the timer and display the final image
+            } else { // Finaliza a animação e exibe a imagem final
                 timer.stop();
-                showingFinalImage = true; // Set the flag to indicate the final image is being displayed
                 try {
+                    showingFinalImage = true;
                     diceImage = ImageIO.read(new File("./Content/Dice/Dice" + value + "Enter.png"));
-                    panel.repaint(); // Trigger a repaint to show the final image
+                    panel.repaint();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -88,5 +71,18 @@ public class DiceView {
         });
 
         timer.start();
+    }
+
+    public void clearDice() {
+        // Remove a imagem do dado e limpa o painel
+        panel.removeAll();
+        diceImage = null;
+        panel.revalidate();
+        panel.repaint();
+        showingFinalImage = false; // Reseta o estado
+    }
+
+    public boolean isDiceExhibited() {
+        return showingFinalImage;
     }
 }
