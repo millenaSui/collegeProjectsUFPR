@@ -171,16 +171,6 @@ public class Game implements MenuCallback {
         for (Player player : gameBoard.getPlayers()) {gameBoardView.addPlayer(player);}
         diceView.addToBoard(gameBoardView.getPanel());
 
-        // Inicia o turno de cada jogador de forma controlada
-        startPlayerTurn(gameBoardView, diceView);
-    }
-
-    private void loadGame() {
-        System.out.println("Carregando jogo salvo...");
-        // Lógica para carregar o jogo salvo
-    }
-
-    private void startPlayerTurn(GameBoardView gameBoardView, DiceView diceView) {
         // Começa com o Player 4
         int rollDice = dice.rollDice();
         diceView.exhibit(dice, rollDice);
@@ -212,5 +202,8 @@ public class Game implements MenuCallback {
         }
     }
 
-
+    private void loadGame() {
+        System.out.println("Carregando jogo salvo...");
+        // Lógica para carregar o jogo salvo
+    }
 }
