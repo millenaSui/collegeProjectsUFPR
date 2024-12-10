@@ -16,6 +16,7 @@ import Views.GameMenuView;
 import Views.MenuCallback;
 import Views.GameBoardView;
 import Views.DiceView;
+import Views.ChanceCardView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -165,13 +166,23 @@ public class Game implements MenuCallback {
     private void newGame() {
         System.out.println("Iniciando novo jogo...");
 
-        DiceView diceView = new DiceView(dice);
-        // Inicializa a visão do tabuleiro com os jogadores
-        GameBoardView gameBoardView = new GameBoardView(gameBoard, diceView);
-        for (Player player : gameBoard.getPlayers()) {gameBoardView.addPlayer(player);}
-        diceView.addToBoard(gameBoardView.getPanel());
 
-        // Começa com o Player 4
+        DiceView diceView = new DiceView(dice);
+        ChanceCardView chanceCardView = new ChanceCardView();
+        GameBoardView gameBoardView = new GameBoardView(gameBoard, diceView);
+
+        for (Player player : gameBoard.getPlayers()) {gameBoardView.addPlayer(player);}
+
+
+        // if (player.getInDetention() > 0) {
+        //     player.setInDetention(player.getInDetention() - 1);
+        //     return;
+        // } else if (player.getInJail()) {
+        //     inJailView.exhibit(player);
+        //     if (jogador não tiver dinheiro suficiente para pagar a fiança ou não quiser pagar)
+        //         return;
+        // } else {
+        diceView.addToBoard(gameBoardView.getPanel());
         int rollDice = dice.rollDice();
         diceView.exhibit(dice, rollDice);
         gameBoard.movePlayer(gameBoard.getPlayers().get(0), rollDice);
@@ -179,8 +190,11 @@ public class Game implements MenuCallback {
 
         if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Chance Cards Deck") {
             ChanceCard choosen = chanceCardsDeck.chooseChanceCard();
-            System.out.println(choosen.getAppearance());
+            chanceCardView.addToBoard(gameBoardView.getPanel());
+            chanceCardView.exhibit(choosen);
+            // Lógica para aplicar o efeito da carta
             return;
+        
         } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Property") {
             System.out.println("Você caiu em uma propriedade!");
             return;
@@ -191,7 +205,7 @@ public class Game implements MenuCallback {
             System.out.println("Você caiu na prisão!");
             return;
         } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Detenção") {
-            System.out.println("Você caiu em um deck de cartas de sorte ou revés!");
+            System.out.println("Você caiu na detenção!");
             return;
         } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Início") {
             System.out.println("Você caiu no início!");

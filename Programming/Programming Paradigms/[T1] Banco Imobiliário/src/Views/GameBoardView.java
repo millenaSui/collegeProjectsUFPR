@@ -19,7 +19,6 @@ public class GameBoardView {
     private Map<Player, PlayerView> playerViews;
     private Player currentPlayer; // Jogador atual
     private int pendingSteps; // Passos pendentes para o jogador
-    private boolean movementPending; // Controle de movimento pendente
     private DiceView diceView; // Referência para o DiceView compartilhado
 
     public JPanel getPanel() {
@@ -62,13 +61,8 @@ public class GameBoardView {
     }
 
     public void updatePlayerPosition(Player player, int steps) {
-        if (movementPending) {
-            return; // Impede o movimento até que o jogador atual finalize
-        }
-
         this.currentPlayer = player;
         this.pendingSteps = steps;
-        this.movementPending = true;
 
         setupKeyListener();
     }
@@ -81,7 +75,7 @@ public class GameBoardView {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (movementPending && currentPlayer != null) {
+                    if (currentPlayer != null) {
                         PlayerView playerView = playerViews.get(currentPlayer);
                         if (playerView != null) {
                             playerView.updatePosition(currentPlayer, pendingSteps);
@@ -91,36 +85,12 @@ public class GameBoardView {
                         }
 
                         diceView.clearDice(); // Limpa a imagem do dado
-                        movementPending = false;
                         pendingSteps = 0;
 
-                        // Passa a vez para o próximo jogador
-                        currentPlayer = getNextPlayer(currentPlayer);
-                        if (currentPlayer != null) {
-                            movementPending = true; // O próximo jogador pode se mover
-                        }
+
                     }
                 }
             }
         });
-    }
-
-    private Player getNextPlayer(Player currentPlayer) {
-        boolean returnNext = false;
-        for (Player player : playerViews.keySet()) {
-            if (returnNext) {
-                return player;
-            }
-            if (player.equals(currentPlayer)) {
-                returnNext = true;
-            }
-        }
-
-        // Se o jogador atual for o último, retorna o primeiro jogador
-        return playerViews.keySet().iterator().next();
-    }
-
-    public void setMovementPending(boolean movementPending) {
-        this.movementPending = movementPending;
     }
 }

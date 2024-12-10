@@ -11,7 +11,7 @@ public class Player {
     private List<Property> properties;
     private boolean isBankrupt;
     private boolean inJail;
-    private boolean inDetention;
+    private int inDetention;
 
     // Constructor
     public Player(String name, String appearance) {
@@ -22,7 +22,7 @@ public class Player {
         this.properties = new ArrayList<>();
         this.isBankrupt = false;
         this.inJail = false;
-        this.inDetention = false;
+        this.inDetention = 0;
     }
 
     // Getters and Setters
@@ -40,6 +40,6 @@ public class Player {
     public void setIsBankrupt(boolean isBankrupt) {this.isBankrupt = isBankrupt;}
     public boolean getInJail() {return inJail;}
     public void setInJail(boolean inJail) {this.inJail = inJail;}
-    public boolean getInDetention() {return inDetention;}
-    public void setInDetention(boolean inDetention) {this.inDetention = inDetention;}
+    public int getInDetention() {return inDetention;}
+    public void setInDetention(int inDetention) {this.inDetention = inDetention;}
 }
