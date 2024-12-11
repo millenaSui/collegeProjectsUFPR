@@ -165,58 +165,73 @@ public class Game implements MenuCallback {
 
     private void newGame() {
         System.out.println("Iniciando novo jogo...");
-
-
         DiceView diceView = new DiceView(dice);
         ChanceCardView chanceCardView = new ChanceCardView();
         GameBoardView gameBoardView = new GameBoardView(gameBoard, diceView);
-
         for (Player player : gameBoard.getPlayers()) {gameBoardView.addPlayer(player);}
-
 
         // if (player.getInDetention() > 0) {
         //     player.setInDetention(player.getInDetention() - 1);
-        //     return;
+        //     passa para o próximo jogador;
         // } else if (player.getInJail()) {
         //     inJailView.exhibit(player);
         //     if (jogador não tiver dinheiro suficiente para pagar a fiança ou não quiser pagar)
-        //         return;
-        // } else {
-        diceView.addToBoard(gameBoardView.getPanel());
-        int rollDice = dice.rollDice();
-        diceView.exhibit(dice, rollDice);
-        gameBoard.movePlayer(gameBoard.getPlayers().get(0), rollDice);
-        gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(0), rollDice);
-
-        if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Chance Cards Deck") {
-            ChanceCard choosen = chanceCardsDeck.chooseChanceCard();
-            chanceCardView.addToBoard(gameBoardView.getPanel());
-            chanceCardView.exhibit(choosen);
-            // Lógica para aplicar o efeito da carta
-            return;
+        //         passa para o próximo jogador;
+        //     else {
+        //         player.setInJail(false);
+        //     }
+        //     aplica a jogada normalmente (como definido abaixo)
+        //     
         
-        } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Property") {
-            System.out.println("Você caiu em uma propriedade!");
-            return;
-        } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Pague ou receba") {
-            System.out.println("Você caiu em um pague ou receba!");
-            return;
-        } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Prisão") {
-            System.out.println("Você caiu na prisão!");
-            return;
-        } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Detenção") {
-            System.out.println("Você caiu na detenção!");
-            return;
-        } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Início") {
-            System.out.println("Você caiu no início!");
-            return;
-        } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType() == "Feriado") {
-            System.out.println("Você caiu em um feriado!");
-            return;
+        synchronized (this) {
+            new Thread(() -> {
+            diceView.addToBoard(gameBoardView.getPanel());
+            int rollDice = dice.rollDice();
+            diceView.exhibit(dice, rollDice);
+            try {
+                Thread.sleep(3000); // Pausa a tarefa por 3 segundos
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            gameBoard.movePlayer(gameBoard.getPlayers().get(0), rollDice);
+            gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(0), rollDice);
+            if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Chance Cards Deck")) {
+                ChanceCard choosen = chanceCardsDeck.chooseChanceCard();
+                chanceCardView.addToBoard(gameBoardView.getPanel());
+                try {
+                    Thread.sleep(4000); // Pausa a tarefa por 1 segundo
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                chanceCardView.exhibit(choosen);
+                System.out.println(choosen.getAppearance());
+                // Lógica para aplicar o efeito da carta
+                return;
+            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Property")) {
+                System.out.println("Você caiu em uma propriedade!");
+                return;
+            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Pague ou receba")) {
+                System.out.println("Você caiu em um pague ou receba!");
+                return;
+            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Prisão")) {
+                System.out.println("Você caiu na prisão!");
+                return;
+            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Detenção")) {
+                System.out.println("Você caiu na detenção!");
+                return;
+            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Início")) {
+                System.out.println("Você caiu no início!");
+                return;
+            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Feriado")) {
+                System.out.println("Você caiu em um feriado!");
+                return;
+            }
+            }).start();
         }
     }
 
-    private void loadGame() {
+    
+    public void loadGame() {
         System.out.println("Carregando jogo salvo...");
         // Lógica para carregar o jogo salvo
     }

@@ -37,6 +37,7 @@ public class ChanceCardView {
     public void exhibit(ChanceCard chanceCard) {
         try {
             cardImage = ImageIO.read(new File(chanceCard.getAppearance()));
+            panel.repaint();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
