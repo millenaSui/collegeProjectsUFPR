@@ -23,7 +23,6 @@ A aplicação do padrão em questão se deu através da estrutura de diretórios
 bancoImobiliario
 │   README.md
 └───src
-│   Main.java    
 │   │
 │   └───Content
 │   │
@@ -32,7 +31,10 @@ bancoImobiliario
 │   └───Models
 │   │
 │   └───Views
-```  
+│   
+│   Main.java    
+``` 
+O diretório ``src`` contém o arquivo principal do projeto e todos os seus packages, já os seus subdiretórios ``Content``, ``Controllers``, ``Models`` e ``Views`` são divididos de forma que armazenem, respectivamente, o conteúdo gráfico utilizado para a construção da interface, a classe controladora do projeto, as classes que dispõe dos dados e métodos para manipulá-los e, por fim, as classes utilizadas para apresentação visual dos elementos na interface.    
 
 ### Padrões Gang of Four (GoF)
 
