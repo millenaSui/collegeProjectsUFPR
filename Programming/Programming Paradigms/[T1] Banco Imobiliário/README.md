@@ -8,13 +8,12 @@ Foram selecionados quatro padrões de projetos para a aplicação no trabalho, s
 - Padrão Model-View-Controller (arquitetura de software)
 - Padrões GoF 
     - Singleton (criacional)
-    - Mediator, Memento e Observer (comportamentais) 
+    - Mediator e Memento (comportamentais) 
     - Decorator (estrutural)
 - Padrões GRASP 
     - Low Coupling
     - Controller 
     - Polymorphism 
-    - Indirection  
 Os respectivos padrões e as motivações para as suas aplicações foram descritos nos tópicos seguintes.
 
 ### Model-View-Controller (MVC)
@@ -44,7 +43,6 @@ Os objetivos para as implementações dos padrões GoF selecionados são:
 - **Comportamentais**
     - **Mediator:** Seguir as boas práticas de desacoplamento e possibilitar que possíveis alterações em classes sejam feitas sem que as suas relações sejam afetadas;
     - **Memento:** Possibilitar a manutenção (save) e retomada (load) de estado do jogo, garantindo que, ao interromper a partida, não sejam perdidos os dados do momento de parada;
-    - **Observer:** Facilitar o intermédio entre a parte operacional do jogo e a parte de interface, estabelecendo princípios para a comunicação entre elas;
 - **Estrutural**
     - **Decorator:** Possibilitar a inserção e remoção de responsabilidades e comportamentos em objetos individuais de forma dinamica (enquanto ocorre o fluxo do jogo);
 
@@ -52,5 +50,4 @@ Os objetivos para as implementações dos padrões GoF selecionados são:
 
 - **Low Coupling:** Prezar pela redução de dependências e maior especificidades de classes;
 - **Controller:** Facilitar a parcela de controle estabelecida pela estrutura de software no formato MVC;
-- **Polymorphism:** Possibilitar que classes que dependem de um mesmo método possam usá-lo de acordo com as suas respectivas especificidades;
-- **Indirection:** Fazer da parcela de controle a mediadora para atuar entre objetos sem que dependam diretamente um do outro.
+- **Polymorphism:** Possibilitar que diferentes classes (Holiday, PayOrEarn, Property, Prision, Detention) que carregam funcionalidades de uma classe em comum (Field) possam utilizá-las de acordo com as suas respectivas especificidades; 
