@@ -14,6 +14,7 @@ Foram selecionados quatro padrões de projetos para a aplicação no trabalho, s
     - Low Coupling
     - Controller 
     - Polymorphism 
+
 Os respectivos padrões e as motivações para as suas aplicações foram descritos nos tópicos seguintes.
 
 ### Model-View-Controller (MVC)
