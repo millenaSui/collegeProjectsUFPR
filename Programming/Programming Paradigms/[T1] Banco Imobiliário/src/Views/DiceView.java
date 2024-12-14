@@ -62,14 +62,13 @@ public class DiceView {
                 timer.stop();
                 try {
                     showingFinalImage = true;
-                    diceImage = ImageIO.read(new File("./Content/Dice/Dice" + value + "Enter.png"));
+                    diceImage = ImageIO.read(new File("./Content/Dice/Dice" + value + ".png"));
                     panel.repaint();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
         });
-
         timer.start();
     }
 

@@ -3,8 +3,6 @@ package Views;
 import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -41,15 +39,6 @@ public class ChanceCardView {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-        this.panel.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    clearCard();
-                }
-            }
-        });
     }
 
     public void addToBoard(Container board) {
@@ -58,7 +47,7 @@ public class ChanceCardView {
         board.add(panel, BorderLayout.CENTER);
     }
 
-    public void clearCard() {
+    public void clearChanceCard() {
         panel.removeAll();
         cardImage = null;
         panel.revalidate();
