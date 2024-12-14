@@ -53,4 +53,4 @@ Os objetivos para as implementações dos padrões GoF selecionados são:
 
 - **Low Coupling:** Prezar pela redução de dependências e maior especificidades de classes;
 - **Controller:** Facilitar a parcela de controle estabelecida pela estrutura de software no formato MVC;
-- **Polymorphism:** Possibilitar que diferentes classes (Holiday, PayOrEarn, Property, Prision, Detention) que carregam funcionalidades de uma classe em comum (Field) possam utilizá-las de acordo com as suas respectivas especificidades; 
+- **Polymorphism:** Possibilitar que diferentes classes (Holiday, Pay, Earn, Property, Prision, Detention) que carregam funcionalidades de uma classe em comum (Field) possam utilizá-las de acordo com as suas respectivas especificidades; 
