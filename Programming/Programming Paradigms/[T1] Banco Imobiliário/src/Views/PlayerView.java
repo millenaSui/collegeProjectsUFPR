@@ -61,19 +61,32 @@ public class PlayerView {
     }
 
     public void updatePosition(Player player, int steps) {
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000); // Delay of 1 second
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            int currentX = panel.getX();
-            int currentY = panel.getY();
-            
-            int newX = currentX - (steps * 170); // Atualiza a posição horizontalmente
-            int newY = currentY; // Mantém a posição vertical
+        int currentX = panel.getX();
+        int currentY = panel.getY();
+        int newX = currentX;
+        int newY = currentY;
         
-            panel.setBounds(newX, newY, panel.getWidth(), panel.getHeight());
-        }).start();
+        int newPosition = player.getPosition() + steps;
+        
+        if (player.getPosition() < 10 && newPosition < 10) {
+            newX = currentX - (steps * 170);
+        } else if (player.getPosition() < 10 && newPosition >= 10) {
+            newX = currentX - ((9 - player.getPosition()) * 170);
+            newY = currentY - ((newPosition - 9) * 130);
+        } else if (player.getPosition() < 15 && newPosition < 15) {
+            newY = currentY - (steps * 130);
+        } else if (player.getPosition() < 15 && newPosition >= 15) {
+            newY = currentY - ((14 - player.getPosition()) * 130);
+            newX = currentX + ((newPosition - 14) * 170);
+        } else if (player.getPosition() < 24 && newPosition < 24) {
+            newX = currentX + (steps * 170);
+        } else if (player.getPosition() < 24 && newPosition >= 24) {
+            newX = currentX + ((23 - player.getPosition()) * 170);
+            newY = currentY + ((newPosition - 23) * 130);
+        } else if (player.getPosition() < 28 && newPosition < 28) {
+            newY = currentY + (steps * 130);
+        }
+        
+        panel.setBounds(newX, newY, panel.getWidth(), panel.getHeight());
     }
 }

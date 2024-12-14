@@ -193,8 +193,8 @@ public class Game implements MenuCallback {
                         diceView.clearDice();
 
                         // Move o jogador e exibe a nova posição
-                        gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), rollDice);
                         gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), rollDice);
+                        gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), rollDice);
                         
                         // Se o jogador cair em um campo de sorte ou revés, exibe a carta e aplica o efeito
                         if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Chance Cards Deck")) {
@@ -212,8 +212,8 @@ public class Game implements MenuCallback {
                                 gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), choosen.getBoardPosition()-gameBoard.getPlayers().get(i[0]).getPosition());
                             } // Avançar ou retroceder um número específico de posições*/
                             if (choosen.getPositionsToAdvance() != 0) {
-                                gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), choosen.getPositionsToAdvance());
                                 gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), choosen.getPositionsToAdvance());
+                                gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), choosen.getPositionsToAdvance());
                             } // Pagar ou receber uma quantia específica
                             if (choosen.getMoney() != 0) {
                                 gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() + choosen.getMoney());

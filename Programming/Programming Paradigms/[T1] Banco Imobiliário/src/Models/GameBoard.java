@@ -40,7 +40,13 @@ public class GameBoard {
     // Método para mover jogador
     public void movePlayer(Player player, int steps) {
         int currentPosition = player.getPosition();
-        int newPosition = (currentPosition + steps) % fields.length;
-        player.setPosition(newPosition);
+        if (currentPosition + steps >= fields.length) {
+            int newPosition = (currentPosition + steps) % fields.length;
+            player.setPosition(newPosition);
+            player.setMoney(player.getMoney() + 200);
+        } else {
+            int newPosition = (currentPosition + steps);
+            player.setPosition(newPosition);
+        }
     }
 }
