@@ -175,6 +175,7 @@ public class Game implements MenuCallback {
         synchronized (this) {
             new Thread(() -> {
                 while (true) {
+                    gameBoardView.displayPlayerInfo(gameBoard.getPlayers().get(i[0]));
 
                     if (gameBoard.getPlayers().get(i[0]).getInDetention() > 0) {
                         gameBoard.getPlayers().get(i[0]).setInDetention(gameBoard.getPlayers().get(i[0]).getInDetention() - 1);
@@ -287,6 +288,7 @@ public class Game implements MenuCallback {
                         }
                     }
                     if (i[0] == 3) {i[0] = 0;} else {i[0]++;}
+                    gameBoardView.clearPlayerInfo();
                 }
             }).start();
         }

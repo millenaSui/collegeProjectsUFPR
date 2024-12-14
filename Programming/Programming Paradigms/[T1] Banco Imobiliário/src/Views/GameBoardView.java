@@ -78,4 +78,49 @@ public class GameBoardView {
             pendingSteps = 0;
         }
     };
+
+    public void displayPlayerInfo(Player player) {
+        // Caminho para o arquivo da fonte
+        String fontPath = "./Content/Font/PressStart2P-Regular.ttf";
+        Font customFont = null;
+    
+        try {
+            // Carregar a fonte personalizada
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
+            customFont = customFont.deriveFont(18f); // Definir o tamanho da fonte
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao carregar a fonte personalizada. Usando fonte padrão.");
+            customFont = new Font("Arial", Font.BOLD, 24); // Fonte fallback
+        }
+    
+        // Criar os labels e configurar com a fonte personalizada
+        JLabel nameLabel = new JLabel(player.getName(), SwingConstants.CENTER);
+        nameLabel.setFont(customFont);
+        nameLabel.setForeground(Color.WHITE);
+        nameLabel.setBounds(0, 10, panel.getWidth(), 30);
+    
+        JLabel moneyLabel = new JLabel("Money: $" + player.getMoney(), SwingConstants.CENTER);
+        moneyLabel.setFont(customFont);
+        moneyLabel.setForeground(Color.WHITE);
+        moneyLabel.setBounds(0, panel.getHeight() - 50, panel.getWidth(), 30);
+    
+        // Configurar o painel
+        panel.setLayout(null);
+        panel.add(nameLabel);
+        panel.add(moneyLabel);
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    public void clearPlayerInfo() {
+        Component[] components = panel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JLabel) {
+                panel.remove(component);
+            }
+        }
+        panel.revalidate();
+        panel.repaint();
+    }
 }
