@@ -6,13 +6,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import Models.ChanceCard;
 
-public class ChanceCardView {
+public class SpecialFieldsView {
     private JPanel panel;
     private BufferedImage cardImage = null;
 
-    public ChanceCardView() {
+    public JPanel getPanel() {return panel;}
+
+    public SpecialFieldsView() {
         this.panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -28,26 +29,22 @@ public class ChanceCardView {
         this.panel.setFocusable(true);
     }
 
-    public JPanel getPanel() {
-        return panel;
-    }
-
-    public void exhibit(ChanceCard chanceCard) {
-        try {
-            cardImage = ImageIO.read(new File(chanceCard.getAppearance()));
-            panel.repaint();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public void addToBoard(Container board) {
         board.setLayout(new BorderLayout());
         panel.setPreferredSize(new Dimension(board.getWidth(), board.getHeight()));
         board.add(panel, BorderLayout.CENTER);
     }
 
-    public void clearChanceCard() {
+    public void exhibit(String appearance) {
+        try {
+            cardImage = ImageIO.read(new File(appearance));
+            panel.repaint();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void clearPanel() {
         panel.removeAll();
         cardImage = null;
         panel.revalidate();

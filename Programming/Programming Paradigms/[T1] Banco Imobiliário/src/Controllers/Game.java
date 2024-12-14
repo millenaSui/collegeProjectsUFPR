@@ -10,11 +10,12 @@ import Models.InitialField;
 import Models.DetentionField;
 import Models.HolidayField;
 import Models.PrisionField;
-import Models.PayOrEarnField;
+import Models.PayField;
+import Models.EarnField;
 
 import Views.GameMenuView;
 import Views.GameBoardView;
-import Views.ChanceCardView;
+import Views.SpecialFieldsView;
 import Views.DiceView;
 
 import Views.MenuCallback;
@@ -49,8 +50,8 @@ public class Game implements MenuCallback {
     private DetentionField detentionField;
     private HolidayField holidayField;
     private PrisionField prisionField;
-    private PayOrEarnField earnField;
-    private PayOrEarnField payField;
+    private PayField payField;
+    private EarnField earnField;
     private ChanceCardsDeck chanceCardsDeck;
 
     // Construtor principal
@@ -140,9 +141,9 @@ public class Game implements MenuCallback {
         // Inicializa os campos especiais
         initialField = new InitialField("./Content/SpecialFields/InitField.png");
         gameBoard.setField(0, initialField);
-        earnField = new PayOrEarnField("./Content/SpecialFields/Earn.png", "earn");
+        earnField = new EarnField("./Content/SpecialFields/Earn.png");
         gameBoard.setField(6, earnField);
-        payField = new PayOrEarnField("./Content/SpecialFields/Pay.png", "pay");
+        payField = new PayField("./Content/SpecialFields/Pay.png");
         gameBoard.setField(21, payField);
         prisionField = new PrisionField("./Content/SpecialFields/Prision.png");
         gameBoard.setField(9, prisionField);
@@ -166,7 +167,7 @@ public class Game implements MenuCallback {
 
     private void newGame() {
         DiceView diceView = new DiceView(dice);
-        ChanceCardView chanceCardView = new ChanceCardView();
+        SpecialFieldsView specialFieldsView = new SpecialFieldsView();
         GameBoardView gameBoardView = new GameBoardView(gameBoard);
         for (Player player : gameBoard.getPlayers()) {gameBoardView.addPlayer(player);}
         final int[] i = {0};
@@ -174,7 +175,7 @@ public class Game implements MenuCallback {
         synchronized (this) {
             new Thread(() -> {
                 while (true) {
-                    System.out.println("Vez do jogador " + gameBoard.getPlayers().get(i[0]).getName());
+
                     if (gameBoard.getPlayers().get(i[0]).getInDetention() > 0) {
                         gameBoard.getPlayers().get(i[0]).setInDetention(gameBoard.getPlayers().get(i[0]).getInDetention() - 1);
                     } else if (gameBoard.getPlayers().get(i[0]).getInJail()) {
@@ -196,29 +197,29 @@ public class Game implements MenuCallback {
                         
                         // Se o jogador cair em um campo de sorte ou revés, exibe a carta e aplica o efeito
                         if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Chance Cards Deck")) {
+                            
                             ChanceCard choosen = chanceCardsDeck.chooseChanceCard();
-                            chanceCardView.addToBoard(gameBoardView.getPanel());
+                            specialFieldsView.addToBoard(gameBoardView.getPanel());
                             try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
-                            chanceCardView.exhibit(choosen);
+                            specialFieldsView.exhibit(choosen.getAppearance());
                             try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
-                            chanceCardView.clearChanceCard();
-                            if (choosen.getBoardPosition() != -1) {
+                            specialFieldsView.clearPanel();
+                            
+                            // Ir para uma posição específica
+                            /*if (choosen.getBoardPosition() != -1) {
                                 gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), choosen.getBoardPosition()-gameBoard.getPlayers().get(i[0]).getPosition());
                                 gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), choosen.getBoardPosition()-gameBoard.getPlayers().get(i[0]).getPosition());
-                            } 
-                            if (choosen.getPositionsToAdvance() > 0) {
+                            } // Avançar ou retroceder um número específico de posições*/
+                            if (choosen.getPositionsToAdvance() != 0) {
                                 gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), choosen.getPositionsToAdvance());
                                 gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), choosen.getPositionsToAdvance());
-                            } 
-                            if (choosen.getMoney() > 0) {
+                            } // Pagar ou receber uma quantia específica
+                            if (choosen.getMoney() != 0) {
                                 gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() + choosen.getMoney());
-                            }
-                            if (choosen.getMoney() < 0) {
-                                gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - choosen.getMoney());
-                            } 
+                            } // Ficar sem jogar por um número específico de rodadas
                             if (choosen.getRoundsNotPlay() > 0) {
                                 gameBoard.getPlayers().get(i[0]).setInDetention(choosen.getRoundsNotPlay());
-                            }
+                            } // Jogar novamente
                             if (choosen.getPlayAgain()) {
                                 i[0]--;
                             }
@@ -228,24 +229,61 @@ public class Game implements MenuCallback {
                             System.out.println("Você caiu em uma propriedade!");
                         } 
                         // Se o jogador cair em um campo de pagamento ou recebimento, verifica o tipo e aplica o efeito
-                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Pague ou receba")) {
-                            System.out.println("Você caiu em um pague ou receba!");
-                        } 
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Earn")) {
+            
+                            specialFieldsView.addToBoard(gameBoardView.getPanel());
+                            try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.exhibit("./Content/SpecialFields/Earn.png");
+                            try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.clearPanel();
+                            gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() + (1000 + (int)(Math.random() * ((3000 - 1000) + 1))));
+
+                        } else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Pay")) {
+                            specialFieldsView.addToBoard(gameBoardView.getPanel());
+                            try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.exhibit("./Content/SpecialFields/Pay.png");
+                            try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.clearPanel();
+
+                            gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - (500 + (int)(Math.random() * ((1000 - 500) + 1))));
+                        }
                         // Se o jogador cair no campo de prisão, não o deixa se mover até que pague a fiança
-                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Prisão")) {
-                            System.out.println("Você caiu na prisão!");
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Prision")) {
+                            specialFieldsView.addToBoard(gameBoardView.getPanel());
+                            try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.exhibit("./Content/SpecialFields/Prision.png");
+                            try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.clearPanel();
                         } 
                         // Se o jogador cair no campo de detenção, não o deixa se mover por 3 rodadas
-                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Detenção")) {
-                            System.out.println("Você caiu na detenção!");
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Detention")) {
+                            specialFieldsView.addToBoard(gameBoardView.getPanel());
+                            try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.exhibit("./Content/SpecialFields/Detention.png");
+                            try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.clearPanel();
+
+                            gameBoard.getPlayers().get(i[0]).setInDetention(3);
                         } 
                         // Se o jogador cair no campo de início, recebe um bônus
-                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Início")) {
-                            System.out.println("Você caiu no início!");
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("InitialField")) {
+                            specialFieldsView.addToBoard(gameBoardView.getPanel());
+                            try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.exhibit("./Content/SpecialFields/InitField.png");
+                            try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.clearPanel();
+
+                            gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() + 1000);
                         } 
                         // Se o jogador cair no campo de feriado, não o deixa se mover por 1 rodada
-                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Feriado")) {
-                            System.out.println("Você caiu em um feriado!");
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Holiday")) {
+                            specialFieldsView.addToBoard(gameBoardView.getPanel());
+                            try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.exhibit("./Content/SpecialFields/Holiday.png");
+                            try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.clearPanel();
+
+                            gameBoard.getPlayers().get(i[0]).setInDetention(1);
                         }
                     }
                     if (i[0] == 3) {i[0] = 0;} else {i[0]++;}
