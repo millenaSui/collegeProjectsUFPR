@@ -1,11 +1,11 @@
 package Controllers;
 
 import Models.GameBoard;
-import Models.Dice;
-import Models.ChanceCardsDeck;
-import Models.ChanceCard;
 import Models.Player;
+import Models.Dice;
 import Models.Property;
+import Models.ChanceCard;
+import Models.ChanceCardsDeck;
 import Models.InitialField;
 import Models.DetentionField;
 import Models.HolidayField;
@@ -13,10 +13,11 @@ import Models.PrisionField;
 import Models.PayOrEarnField;
 
 import Views.GameMenuView;
-import Views.MenuCallback;
 import Views.GameBoardView;
-import Views.DiceView;
 import Views.ChanceCardView;
+import Views.DiceView;
+
+import Views.MenuCallback;
 
 import java.util.Arrays;
 import java.util.List;
@@ -164,68 +165,91 @@ public class Game implements MenuCallback {
     }
 
     private void newGame() {
-        System.out.println("Iniciando novo jogo...");
         DiceView diceView = new DiceView(dice);
         ChanceCardView chanceCardView = new ChanceCardView();
-        GameBoardView gameBoardView = new GameBoardView(gameBoard, diceView);
+        GameBoardView gameBoardView = new GameBoardView(gameBoard);
         for (Player player : gameBoard.getPlayers()) {gameBoardView.addPlayer(player);}
+        final int[] i = {0};
 
-        // if (player.getInDetention() > 0) {
-        //     player.setInDetention(player.getInDetention() - 1);
-        //     passa para o próximo jogador;
-        // } else if (player.getInJail()) {
-        //     inJailView.exhibit(player);
-        //     if (jogador não tiver dinheiro suficiente para pagar a fiança ou não quiser pagar)
-        //         passa para o próximo jogador;
-        //     else {
-        //         player.setInJail(false);
-        //     }
-        //     aplica a jogada normalmente (como definido abaixo)
-        //     
-        
         synchronized (this) {
             new Thread(() -> {
-            diceView.addToBoard(gameBoardView.getPanel());
-            int rollDice = dice.rollDice();
-            diceView.exhibit(dice, rollDice);
-            try {
-                Thread.sleep(3000); // Pausa a tarefa por 3 segundos
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            gameBoard.movePlayer(gameBoard.getPlayers().get(0), rollDice);
-            gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(0), rollDice);
-            if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Chance Cards Deck")) {
-                ChanceCard choosen = chanceCardsDeck.chooseChanceCard();
-                chanceCardView.addToBoard(gameBoardView.getPanel());
-                try {
-                    Thread.sleep(4000); // Pausa a tarefa por 1 segundo
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                while (true) {
+                    System.out.println("Vez do jogador " + gameBoard.getPlayers().get(i[0]).getName());
+                    if (gameBoard.getPlayers().get(i[0]).getInDetention() > 0) {
+                        gameBoard.getPlayers().get(i[0]).setInDetention(gameBoard.getPlayers().get(i[0]).getInDetention() - 1);
+                    } else if (gameBoard.getPlayers().get(i[0]).getInJail()) {
+                        // inJailView.exhibit(player);
+                        if (gameBoard.getPlayers().get(i[0]).getMoney() >= 2000/* && jogador quer pagar a fiança*/) {
+                            gameBoard.getPlayers().get(i[0]).setInJail(false);
+                        }
+                    } else {
+                        // Rola o dado e exibe o resultado
+                        diceView.addToBoard(gameBoardView.getPanel());
+                        int rollDice = dice.rollDice();
+                        diceView.exhibit(dice, rollDice);
+                        try {Thread.sleep(5000);} catch (InterruptedException e) {e.printStackTrace();}
+                        diceView.clearDice();
+
+                        // Move o jogador e exibe a nova posição
+                        gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), rollDice);
+                        gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), rollDice);
+                        
+                        // Se o jogador cair em um campo de sorte ou revés, exibe a carta e aplica o efeito
+                        if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Chance Cards Deck")) {
+                            ChanceCard choosen = chanceCardsDeck.chooseChanceCard();
+                            chanceCardView.addToBoard(gameBoardView.getPanel());
+                            try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+                            chanceCardView.exhibit(choosen);
+                            try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
+                            chanceCardView.clearChanceCard();
+                            if (choosen.getBoardPosition() != -1) {
+                                gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), choosen.getBoardPosition()-gameBoard.getPlayers().get(i[0]).getPosition());
+                                gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), choosen.getBoardPosition()-gameBoard.getPlayers().get(i[0]).getPosition());
+                            } 
+                            if (choosen.getPositionsToAdvance() > 0) {
+                                gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), choosen.getPositionsToAdvance());
+                                gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), choosen.getPositionsToAdvance());
+                            } 
+                            if (choosen.getMoney() > 0) {
+                                gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() + choosen.getMoney());
+                            }
+                            if (choosen.getMoney() < 0) {
+                                gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - choosen.getMoney());
+                            } 
+                            if (choosen.getRoundsNotPlay() > 0) {
+                                gameBoard.getPlayers().get(i[0]).setInDetention(choosen.getRoundsNotPlay());
+                            }
+                            if (choosen.getPlayAgain()) {
+                                i[0]--;
+                            }
+                        } 
+                        // Se o jogador cair em um campo de propriedade, exibe a propriedade e dá a opção de comprar ou pagar aluguel
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Property")) {
+                            System.out.println("Você caiu em uma propriedade!");
+                        } 
+                        // Se o jogador cair em um campo de pagamento ou recebimento, verifica o tipo e aplica o efeito
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Pague ou receba")) {
+                            System.out.println("Você caiu em um pague ou receba!");
+                        } 
+                        // Se o jogador cair no campo de prisão, não o deixa se mover até que pague a fiança
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Prisão")) {
+                            System.out.println("Você caiu na prisão!");
+                        } 
+                        // Se o jogador cair no campo de detenção, não o deixa se mover por 3 rodadas
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Detenção")) {
+                            System.out.println("Você caiu na detenção!");
+                        } 
+                        // Se o jogador cair no campo de início, recebe um bônus
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Início")) {
+                            System.out.println("Você caiu no início!");
+                        } 
+                        // Se o jogador cair no campo de feriado, não o deixa se mover por 1 rodada
+                        else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Feriado")) {
+                            System.out.println("Você caiu em um feriado!");
+                        }
+                    }
+                    if (i[0] == 3) {i[0] = 0;} else {i[0]++;}
                 }
-                chanceCardView.exhibit(choosen);
-                System.out.println(choosen.getAppearance());
-                // Lógica para aplicar o efeito da carta
-                return;
-            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Property")) {
-                System.out.println("Você caiu em uma propriedade!");
-                return;
-            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Pague ou receba")) {
-                System.out.println("Você caiu em um pague ou receba!");
-                return;
-            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Prisão")) {
-                System.out.println("Você caiu na prisão!");
-                return;
-            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Detenção")) {
-                System.out.println("Você caiu na detenção!");
-                return;
-            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Início")) {
-                System.out.println("Você caiu no início!");
-                return;
-            } else if (gameBoard.getField(gameBoard.getPlayers().get(0).getPosition()).getType().equals("Feriado")) {
-                System.out.println("Você caiu em um feriado!");
-                return;
-            }
             }).start();
         }
     }
