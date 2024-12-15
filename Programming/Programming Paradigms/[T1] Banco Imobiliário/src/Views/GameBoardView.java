@@ -73,7 +73,6 @@ public class GameBoardView {
                 playerView.updatePosition(currentPlayer, pendingSteps);
                 panel.revalidate();
                 panel.repaint();
-                System.out.println(currentPlayer.getName() + " moveu " + pendingSteps + " passos.");
             }
             pendingSteps = 0;
         }
@@ -87,7 +86,7 @@ public class GameBoardView {
         try {
             // Carregar a fonte personalizada
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
-            customFont = customFont.deriveFont(18f); // Definir o tamanho da fonte
+            customFont = customFont.deriveFont(16f); // Definir o tamanho da fonte
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
             System.out.println("Erro ao carregar a fonte personalizada. Usando fonte padrão.");
@@ -97,12 +96,12 @@ public class GameBoardView {
         // Criar os labels e configurar com a fonte personalizada
         JLabel nameLabel = new JLabel(player.getName(), SwingConstants.CENTER);
         nameLabel.setFont(customFont);
-        nameLabel.setForeground(Color.WHITE);
-        nameLabel.setBounds(0, 10, panel.getWidth(), 30);
+        nameLabel.setForeground(new Color(36, 24, 24));
+        nameLabel.setBounds(0, 60, panel.getWidth(), 30);
     
         JLabel moneyLabel = new JLabel("Money: $" + player.getMoney(), SwingConstants.CENTER);
         moneyLabel.setFont(customFont);
-        moneyLabel.setForeground(Color.WHITE);
+        moneyLabel.setForeground(new Color(36, 24, 24));
         moneyLabel.setBounds(0, panel.getHeight() - 50, panel.getWidth(), 30);
     
         // Configurar o painel
@@ -122,5 +121,14 @@ public class GameBoardView {
         }
         panel.revalidate();
         panel.repaint();
+    }
+
+    public void removePlayer(Player player) {
+        PlayerView playerView = playerViews.remove(player);
+        if (playerView != null) {
+            playerView.removeFromBoard(panel);
+            panel.revalidate();
+            panel.repaint();
+        }
     }
 }
