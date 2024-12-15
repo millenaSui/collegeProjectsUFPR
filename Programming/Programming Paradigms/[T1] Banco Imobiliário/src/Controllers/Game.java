@@ -177,14 +177,50 @@ public class Game implements MenuCallback {
                 while (true) {
                     gameBoardView.displayPlayerInfo(gameBoard.getPlayers().get(i[0]));
 
-                    if (gameBoard.getPlayers().get(i[0]).getInDetention() > 0) {
-                        gameBoard.getPlayers().get(i[0]).setInDetention(gameBoard.getPlayers().get(i[0]).getInDetention() - 1);
-                    } else if (gameBoard.getPlayers().get(i[0]).getInJail()) {
-                        // inJailView.exhibit(player);
-                        if (gameBoard.getPlayers().get(i[0]).getMoney() >= 2000/* && jogador quer pagar a fiança*/) {
-                            gameBoard.getPlayers().get(i[0]).setInJail(false);
+                    // Se o jogador falir, indica que ele perdeu e o remove do jogo
+                    if (gameBoard.getPlayers().get(i[0]).getMoney() <= 0) {
+                        gameBoard.getPlayers().remove(i[0]);
+                        gameBoardView.removePlayer(gameBoard.getPlayers().get(i[0]));
+                        ////////// EXIBE TEXTO NA TELA PRA MOSTRAR QUE JOGADOR PERDEU
+                        
+                        // Se restar apenas um jogador, ele vence
+                        if (gameBoard.getPlayers().size() == 1) {
+                            ////////// EXIBE TEXTO NA TELA PRA MOSTRAR QUE JOGADOR VENCEU
+                            break;
                         }
-                    } else {
+                    
+                    // Se o jogador estiver na detenção, não o deixa se mover até que o tempo acabe
+                    } else if (gameBoard.getPlayers().get(i[0]).getInDetention() > 0 && !gameBoard.getPlayers().get(i[0]).getInJail()) {
+                        gameBoard.getPlayers().get(i[0]).setInDetention(gameBoard.getPlayers().get(i[0]).getInDetention() - 1);
+                    
+                    } // Se o jogador estiver na prisão, não o deixa se mover até que pague a fiança ou fique 5 rodadas 
+                    else if (gameBoard.getPlayers().get(i[0]).getInJail()) {
+                        specialFieldsView.addToBoard(gameBoardView.getPanel());
+                        try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+
+                        // Configura o listener antes de criar os botões
+                        specialFieldsView.setButtonClickListener(button -> {
+                            if (button.equals("YES") && gameBoard.getPlayers().get(i[0]).getMoney() > 2000) {
+                                gameBoard.getPlayers().get(i[0]).setInJail(false);
+                                gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - 2000);
+                                gameBoard.getPlayers().get(i[0]).setInDetention(0);
+                                specialFieldsView.clearPanel();
+                            } // Se o jogador tiver cumprido as 5 rodadas, ele pode sair da prisão
+                            else if (gameBoard.getPlayers().get(i[0]).getInDetention() == 0) {
+                                gameBoard.getPlayers().get(i[0]).setInJail(false);
+                                gameBoard.getPlayers().get(i[0]).setInDetention(0);
+                                specialFieldsView.clearPanel();
+                            } // Se o jogador não tiver dinheiro suficiente para pagar a fiança, ele deve ficar 5 rodadas na prisão
+                            else {
+                                gameBoard.getPlayers().get(i[0]).setInDetention(gameBoard.getPlayers().get(i[0]).getInDetention() - 1);
+                            }
+                        });
+                        specialFieldsView.createPrisionButtons();
+                        specialFieldsView.exhibit("./Content/SpecialFields/Prision.png");
+                        try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
+                        specialFieldsView.clearPanel();
+                    } // Jogador não está em detenção ou prisão, faz uma jogada normal 
+                    else {
                         // Rola o dado e exibe o resultado
                         diceView.addToBoard(gameBoardView.getPanel());
                         int rollDice = dice.rollDice();
@@ -255,20 +291,17 @@ public class Game implements MenuCallback {
  
                             // Configura o listener antes de criar os botões
                             specialFieldsView.setButtonClickListener(button -> {
-                                if (button.equals("YES") && gameBoard.getPlayers().get(i[0]).getMoney() >= 2000) {
+                                if (button.equals("YES") && gameBoard.getPlayers().get(i[0]).getMoney() > 2000) {
                                     gameBoard.getPlayers().get(i[0]).setInJail(false);
                                     gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - 2000);
-                                    // Ação caso o botão "Yes" seja clicado
-                                } else if (button.equals("NO") || gameBoard.getPlayers().get(i[0]).getMoney() < 2000) {
-                                    System.out.println("Botão 'No' clicado! Executando ação correspondente...");
+                                    gameBoard.getPlayers().get(i[0]).setInDetention(0);
+                                    specialFieldsView.clearPanel();
+                                } else {
                                     gameBoard.getPlayers().get(i[0]).setInJail(true);
                                     gameBoard.getPlayers().get(i[0]).setInDetention(5);
+                                    specialFieldsView.clearPanel();
                                 }
-                                gameBoard.getPlayers().get(i[0]).setInJail(true);
-                                gameBoard.getPlayers().get(i[0]).setInDetention(5);
-                                specialFieldsView.clearPanel(); // Limpa o painel após o clique
                             });
-
                             specialFieldsView.createPrisionButtons();
                             specialFieldsView.exhibit("./Content/SpecialFields/Prision.png");
                             try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
