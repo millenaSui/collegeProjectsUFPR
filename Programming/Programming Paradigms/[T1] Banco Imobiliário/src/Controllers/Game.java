@@ -80,22 +80,20 @@ public class Game implements MenuCallback {
         
         // Inicializa o baralho de cartas de sorte ou revés
         chanceCardsDeck = new ChanceCardsDeck();
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card1.png", 2, -1, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card2.png", 0, -1, 0, 0, true));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card3.png", 0, -1, 0, 0, true));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card4.png", 1, -1, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card5.png", 0, 6, 1000, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card6.png", 0, 14, 0, 1, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card7.png", 3, -1, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card8.png", -2, -1, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card9.png", -2, -1, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card10.png", 0, -1, -500, 1, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card11.png", 0, -1, 0, 1, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card12.png", 0, -1, 0, 2, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card13.png", -3, -1, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card14.png", 0, 0, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card13.png", -3, -1, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card14.png", 0, 0, 0, 0, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card1.png", 2, 0, 0, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card2.png", 0, 0, 0, true));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card3.png", 0, 0, 0, true));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card4.png", 1, 0, 0, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card5.png", 0, 1000, 0, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card6.png", 0, 0, 1, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card7.png", 3, 0, 0, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card8.png", -2, 0, 0, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card9.png", -2, 0, 0, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card10.png", 0, -500, 1, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card11.png", 0, 0, 1, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card12.png", 0, 0, 2, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card13.png", -3, 0, 0, false));
+
         // Adiciona o baralho de cartas de sorte ou revés ao tabuleiro
         gameBoard.setField(1, chanceCardsDeck);
         gameBoard.setField(5, chanceCardsDeck);
@@ -242,11 +240,7 @@ public class Game implements MenuCallback {
                             try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
                             specialFieldsView.clearPanel();
                             
-                            // Ir para uma posição específica
-                            /*if (choosen.getBoardPosition() != -1) {
-                                gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), choosen.getBoardPosition()-gameBoard.getPlayers().get(i[0]).getPosition());
-                                gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), choosen.getBoardPosition()-gameBoard.getPlayers().get(i[0]).getPosition());
-                            } // Avançar ou retroceder um número específico de posições*/
+                            // Avançar ou retroceder um número específico de posições*/
                             if (choosen.getPositionsToAdvance() != 0) {
                                 gameBoardView.updatePlayerPosition(gameBoard.getPlayers().get(i[0]), choosen.getPositionsToAdvance());
                                 gameBoard.movePlayer(gameBoard.getPlayers().get(i[0]), choosen.getPositionsToAdvance());
