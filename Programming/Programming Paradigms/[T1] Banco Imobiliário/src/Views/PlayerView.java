@@ -68,25 +68,62 @@ public class PlayerView {
         
         int newPosition = player.getPosition() + steps;
         
-        if (player.getPosition() < 10 && newPosition < 10) {
-            newX = currentX - (steps * 170);
-        } else if (player.getPosition() < 10 && newPosition >= 10) {
-            newX = currentX - ((9 - player.getPosition()) * 170);
-            newY = currentY - ((newPosition - 9) * 130);
-        } else if (player.getPosition() < 15 && newPosition < 15) {
-            newY = currentY - (steps * 130);
-        } else if (player.getPosition() < 15 && newPosition >= 15) {
-            newY = currentY - ((14 - player.getPosition()) * 130);
-            newX = currentX + ((newPosition - 14) * 170);
-        } else if (player.getPosition() < 24 && newPosition < 24) {
-            newX = currentX + (steps * 170);
-        } else if (player.getPosition() < 24 && newPosition >= 24) {
-            newX = currentX + ((23 - player.getPosition()) * 170);
-            newY = currentY + ((newPosition - 23) * 130);
-        } else if (player.getPosition() < 28 && newPosition < 28) {
-            newY = currentY + (steps * 130);
+        if (player.getPosition() < 10 && newPosition < 10) { // CERTO
+            if (steps >= 0) {
+                newX = currentX - (steps * 170);
+            } else if (steps < 0 && newPosition >= 0) {
+                newX = currentX - (steps * 170);
+            } else if (steps < 0 && newPosition < 0) {
+                newX = currentX + (player.getPosition() * 170);
+                newY = currentY + (newPosition * 130);
+            }   
+        } else if (player.getPosition() < 15 && newPosition < 15) { // CERTO
+            if (player.getPosition() < 9 && steps >= 0) {
+                newX = currentX + ((player.getPosition() - 9) * 170);
+                newY = currentY - ((newPosition - 9) * 130);
+            } else if (player.getPosition() >= 9 && steps >= 0) {
+                newY = currentY - (steps * 130);
+            } else if (steps < 0 && newPosition >= 9) {
+                newY = currentY - (steps * 130);
+            } else if (steps < 0 && newPosition < 9) {
+                newY = currentY + ((player.getPosition() - 9) * 130);
+                newX = currentX - ((newPosition - 9) * 170);
+            }
+        } else if (player.getPosition() < 24 && newPosition < 24) { // CERTO
+            if (player.getPosition() < 14 && steps >= 0) {
+                newX = currentX + ((newPosition - 14) * 170);
+                newY = currentY + ((player.getPosition() - 14) * 130);
+            } else if (player.getPosition() >= 14 && steps >= 0) {
+                newX = currentX + (steps * 170);
+            } else if (steps < 0 && newPosition >= 14) {
+                newX = currentX + (steps * 170);
+            } else if (steps < 0 && newPosition < 14) {
+                newY = currentY - ((newPosition - 14) * 130);
+                newX = currentX - ((player.getPosition() - 14) * 170);
+            }
+        } else if (player.getPosition() < 29 && newPosition < 29) {
+            if (steps >= 0 && player.getPosition() < 24) {
+                newX = currentX - ((player.getPosition() - 23) * 170);
+                newY = currentY + ((newPosition - 23) * 130);
+            } else if (steps >= 0 && player.getPosition() >= 23) {
+                newY = currentY + (steps * 130);
+            } else if (steps < 0 && newPosition >= 23) {
+                newY = currentY + (steps * 130);
+            } else if (steps < 0 && newPosition < 23) {
+                newY = currentY + ((player.getPosition() - 23) * 130);
+                newX = currentX + ((newPosition - 23) * 170);
+            }
+        } else if (player.getPosition() < 29 && newPosition >= 29) {
+            if (steps >= 0) {
+                newX = currentX - ((newPosition - 28) * 170);
+                newY = currentY - ((player.getPosition() - 28) * 130);
+            }
         }
         
         panel.setBounds(newX, newY, panel.getWidth(), panel.getHeight());
+    }
+
+    public void removeFromBoard(Container board) {
+        board.remove(panel);    
     }
 }
