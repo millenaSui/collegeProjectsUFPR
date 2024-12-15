@@ -252,6 +252,24 @@ public class Game implements MenuCallback {
                         else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Prision")) {
                             specialFieldsView.addToBoard(gameBoardView.getPanel());
                             try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+ 
+                            // Configura o listener antes de criar os botões
+                            specialFieldsView.setButtonClickListener(button -> {
+                                if (button.equals("YES") && gameBoard.getPlayers().get(i[0]).getMoney() >= 2000) {
+                                    gameBoard.getPlayers().get(i[0]).setInJail(false);
+                                    gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - 2000);
+                                    // Ação caso o botão "Yes" seja clicado
+                                } else if (button.equals("NO") || gameBoard.getPlayers().get(i[0]).getMoney() < 2000) {
+                                    System.out.println("Botão 'No' clicado! Executando ação correspondente...");
+                                    gameBoard.getPlayers().get(i[0]).setInJail(true);
+                                    gameBoard.getPlayers().get(i[0]).setInDetention(5);
+                                }
+                                gameBoard.getPlayers().get(i[0]).setInJail(true);
+                                gameBoard.getPlayers().get(i[0]).setInDetention(5);
+                                specialFieldsView.clearPanel(); // Limpa o painel após o clique
+                            });
+
+                            specialFieldsView.createPrisionButtons();
                             specialFieldsView.exhibit("./Content/SpecialFields/Prision.png");
                             try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
                             specialFieldsView.clearPanel();
