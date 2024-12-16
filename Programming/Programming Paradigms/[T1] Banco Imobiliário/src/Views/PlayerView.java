@@ -1,19 +1,20 @@
 package Views;
 
 import Models.Player;
-
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Dimension;
-import java.awt.Container;
 
 public class PlayerView {
     private JPanel panel;
     private static int playerCount = 0; // Static counter to keep track of the number of players
+    public static int widthPlayerMoviment = 145;
+    public static int heightPlayerMoviment = 115;
 
     public JPanel getPanel() {
         return panel;
@@ -70,53 +71,53 @@ public class PlayerView {
         
         if (player.getPosition() < 10 && newPosition < 10) { // CERTO
             if (steps >= 0) {
-                newX = currentX - (steps * 170);
+                newX = currentX - (steps * widthPlayerMoviment);
             } else if (steps < 0 && newPosition >= 0) {
-                newX = currentX - (steps * 170);
+                newX = currentX - (steps * widthPlayerMoviment);
             } else if (steps < 0 && newPosition < 0) {
-                newX = currentX + (player.getPosition() * 170);
-                newY = currentY + (newPosition * 130);
+                newX = currentX + (player.getPosition() * widthPlayerMoviment);
+                newY = currentY + (newPosition * heightPlayerMoviment);
             }   
         } else if (player.getPosition() < 15 && newPosition < 15) { // CERTO
             if (player.getPosition() < 9 && steps >= 0) {
-                newX = currentX + ((player.getPosition() - 9) * 170);
-                newY = currentY - ((newPosition - 9) * 130);
+                newX = currentX + ((player.getPosition() - 9) * widthPlayerMoviment);
+                newY = currentY - ((newPosition - 9) * heightPlayerMoviment);
             } else if (player.getPosition() >= 9 && steps >= 0) {
-                newY = currentY - (steps * 130);
+                newY = currentY - (steps * heightPlayerMoviment);
             } else if (steps < 0 && newPosition >= 9) {
-                newY = currentY - (steps * 130);
+                newY = currentY - (steps * heightPlayerMoviment);
             } else if (steps < 0 && newPosition < 9) {
-                newY = currentY + ((player.getPosition() - 9) * 130);
-                newX = currentX - ((newPosition - 9) * 170);
+                newY = currentY + ((player.getPosition() - 9) * heightPlayerMoviment);
+                newX = currentX - ((newPosition - 9) * widthPlayerMoviment);
             }
         } else if (player.getPosition() < 24 && newPosition < 24) { // CERTO
             if (player.getPosition() < 14 && steps >= 0) {
-                newX = currentX + ((newPosition - 14) * 170);
-                newY = currentY + ((player.getPosition() - 14) * 130);
+                newX = currentX + ((newPosition - 14) * widthPlayerMoviment);
+                newY = currentY + ((player.getPosition() - 14) * heightPlayerMoviment);
             } else if (player.getPosition() >= 14 && steps >= 0) {
-                newX = currentX + (steps * 170);
+                newX = currentX + (steps * widthPlayerMoviment);
             } else if (steps < 0 && newPosition >= 14) {
-                newX = currentX + (steps * 170);
+                newX = currentX + (steps * widthPlayerMoviment);
             } else if (steps < 0 && newPosition < 14) {
-                newY = currentY - ((newPosition - 14) * 130);
-                newX = currentX - ((player.getPosition() - 14) * 170);
+                newY = currentY - ((newPosition - 14) * heightPlayerMoviment);
+                newX = currentX - ((player.getPosition() - 14) * widthPlayerMoviment);
             }
         } else if (player.getPosition() < 29 && newPosition < 29) {
             if (steps >= 0 && player.getPosition() < 24) {
-                newX = currentX - ((player.getPosition() - 23) * 170);
-                newY = currentY + ((newPosition - 23) * 130);
+                newX = currentX - ((player.getPosition() - 23) * widthPlayerMoviment);
+                newY = currentY + ((newPosition - 23) * heightPlayerMoviment);
             } else if (steps >= 0 && player.getPosition() >= 23) {
-                newY = currentY + (steps * 130);
+                newY = currentY + (steps * heightPlayerMoviment);
             } else if (steps < 0 && newPosition >= 23) {
-                newY = currentY + (steps * 130);
+                newY = currentY + (steps * heightPlayerMoviment);
             } else if (steps < 0 && newPosition < 23) {
-                newY = currentY + ((player.getPosition() - 23) * 130);
-                newX = currentX + ((newPosition - 23) * 170);
+                newY = currentY + ((player.getPosition() - 23) * heightPlayerMoviment);
+                newX = currentX + ((newPosition - 23) * widthPlayerMoviment);
             }
         } else if (player.getPosition() < 29 && newPosition >= 29) {
             if (steps >= 0) {
-                newX = currentX - ((newPosition - 28) * 170);
-                newY = currentY - ((player.getPosition() - 28) * 130);
+                newX = currentX - ((newPosition - 28) * widthPlayerMoviment);
+                newY = currentY - ((player.getPosition() - 28) * heightPlayerMoviment);
             }
         }
         

@@ -10,7 +10,6 @@ public class GameCaretaker {
     public void saveToDisk(GameStateMemento memento) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SAVE_FILE))) {
             oos.writeObject(memento);
-            System.out.println("Estado do jogo salvo em disco.");
         } catch (IOException e) {
             System.err.println("Erro ao salvar o estado do jogo: " + e.getMessage());
         }

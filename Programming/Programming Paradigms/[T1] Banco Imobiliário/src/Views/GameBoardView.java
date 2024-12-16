@@ -2,14 +2,13 @@ package Views;
 
 import Models.GameBoard;
 import Models.Player;
-
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import java.util.HashMap;
 import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class GameBoardView {
 
@@ -25,7 +24,12 @@ public class GameBoardView {
     public GameBoardView(GameBoard gameBoard) {
         JFrame frame = new JFrame("Monopoly Valley");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1920, 1080);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
+        int width = Math.min(1920, screenSize.width - screenInsets.left - screenInsets.right);
+        int height = Math.min(1080, screenSize.height - screenInsets.top - screenInsets.bottom);
+        frame.setSize(width, height);
+        frame.setResizable(false);
 
         playerViews = new HashMap<>();
 
@@ -97,12 +101,12 @@ public class GameBoardView {
         JLabel nameLabel = new JLabel(player.getName(), SwingConstants.CENTER);
         nameLabel.setFont(customFont);
         nameLabel.setForeground(new Color(36, 24, 24));
-        nameLabel.setBounds(0, 60, panel.getWidth(), 30);
+        nameLabel.setBounds(0, 50, panel.getWidth(), 30);
     
         JLabel moneyLabel = new JLabel("Money: $" + player.getMoney(), SwingConstants.CENTER);
         moneyLabel.setFont(customFont);
         moneyLabel.setForeground(new Color(36, 24, 24));
-        moneyLabel.setBounds(0, panel.getHeight() - 50, panel.getWidth(), 30);
+        moneyLabel.setBounds(0, panel.getHeight() - 65, panel.getWidth(), 30);
     
         // Configurar o painel
         panel.setLayout(null);

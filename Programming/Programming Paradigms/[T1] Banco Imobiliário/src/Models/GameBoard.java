@@ -2,11 +2,12 @@ package Models;
 
 import java.util.Random;
 import java.util.List;
+import java.util.ArrayList;
 
 public class GameBoard {
     private static GameBoard instance = null; // Instância única da classe
     private String appearance;
-    private List<Player> players;
+    private List<Player> players = new ArrayList<Player>();
     private Field[] fields;
 
     // Constructor private para garantir instância única
