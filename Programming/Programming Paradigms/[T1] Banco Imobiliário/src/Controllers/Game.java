@@ -80,19 +80,17 @@ public class Game implements MenuCallback {
         
         // Inicializa o baralho de cartas de sorte ou revés
         chanceCardsDeck = new ChanceCardsDeck();
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card1.png", 2, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card2.png", 0, 0, 0, true));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card3.png", 0, 0, 0, true));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card4.png", 1, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card5.png", 0, 1000, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card6.png", 0, 0, 1, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card7.png", 3, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card8.png", -2, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card9.png", -2, 0, 0, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card10.png", 0, -500, 1, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card11.png", 0, 0, 1, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card12.png", 0, 0, 2, false));
-        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card13.png", -3, 0, 0, false));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card1.png", 2, 0, 0));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card2.png", 1, 0, 0));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card3.png", 0, 1000, 0));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card4.png", 0, 0, 1));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card5.png", 3, 0, 0));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card6.png", -2, 0, 0));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card7.png", -2, 0, 0));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card8.png", 0, -500, 1));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card9.png", 0, 0, 1));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card10.png", 0, 0, 2));
+        chanceCardsDeck.addChanceCard(new ChanceCard("./Content/ChanceCards/Card11.png", -3, 0, 0));
 
         // Adiciona o baralho de cartas de sorte ou revés ao tabuleiro
         gameBoard.setField(1, chanceCardsDeck);
@@ -107,7 +105,7 @@ public class Game implements MenuCallback {
         gameBoard.setField(2, museuGunther);
         armazemPierre = new Property(2000, 200, "./Content/Properties/Pierre.png");
         gameBoard.setField(3, armazemPierre);
-        mercadoJoja = new Property(10000, 1000, "./Content/Properties/Joja.png");
+        mercadoJoja = new Property(10000, 1000, "./Content/Properties/Morris.png");
         gameBoard.setField(4, mercadoJoja);
         atelieEmily = new Property(1000, 100, "./Content/Properties/Emily.png");
         gameBoard.setField(7, atelieEmily);
@@ -198,27 +196,37 @@ public class Game implements MenuCallback {
 
                         // Configura o listener antes de criar os botões
                         specialFieldsView.setButtonClickListener(button -> {
-                            if (button.equals("YES") && gameBoard.getPlayers().get(i[0]).getMoney() > 2000) {
-                                gameBoard.getPlayers().get(i[0]).setInJail(false);
-                                gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - 2000);
-                                gameBoard.getPlayers().get(i[0]).setInDetention(0);
-                                specialFieldsView.clearPanel();
-                            } // Se o jogador tiver cumprido as 5 rodadas, ele pode sair da prisão
-                            else if (gameBoard.getPlayers().get(i[0]).getInDetention() == 0) {
-                                gameBoard.getPlayers().get(i[0]).setInJail(false);
-                                gameBoard.getPlayers().get(i[0]).setInDetention(0);
-                                specialFieldsView.clearPanel();
-                            } // Se o jogador não tiver dinheiro suficiente para pagar a fiança, ele deve ficar 5 rodadas na prisão
-                            else {
+                            if (button.equals("YES")) {
+                                if (gameBoard.getPlayers().get(i[0]).getMoney() > 2000) {
+                                    gameBoard.getPlayers().get(i[0]).setInJail(false);
+                                    gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - 2000);
+                                    gameBoard.getPlayers().get(i[0]).setInDetention(0);
+                                    specialFieldsView.clearPanel();
+                             
+                                } // Se o jogador tiver cumprido as 5 rodadas, ele pode sair da prisão
+                                else if (gameBoard.getPlayers().get(i[0]).getInDetention() == 0) {
+                                    gameBoard.getPlayers().get(i[0]).setInJail(false);
+                                    specialFieldsView.clearPanel();
+                                } // Se o jogador não tiver dinheiro suficiente para pagar a fiança, ele deve ficar 5 rodadas na prisão
+                                else {
+                                    gameBoard.getPlayers().get(i[0]).setInDetention(gameBoard.getPlayers().get(i[0]).getInDetention() - 1);
+                                }
+                            } else if (button.equals("NO")) {
                                 gameBoard.getPlayers().get(i[0]).setInDetention(gameBoard.getPlayers().get(i[0]).getInDetention() - 1);
+                                specialFieldsView.clearPanel();
+                            } else {
+                                gameBoard.getPlayers().get(i[0]).setInDetention(gameBoard.getPlayers().get(i[0]).getInDetention() - 1);
+                                specialFieldsView.clearPanel();
                             }
                         });
+                    
                         specialFieldsView.createPrisionButtons();
                         specialFieldsView.exhibit("./Content/SpecialFields/Prision.png");
                         try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
                         specialFieldsView.clearPanel();
-                    } // Jogador não está em detenção ou prisão, faz uma jogada normal 
-                    else {
+                    
+                    } else { // Jogador não está em detenção ou prisão, faz uma jogada normal 
+                    
                         // Rola o dado e exibe o resultado
                         diceView.addToBoard(gameBoardView.getPanel());
                         int rollDice = dice.rollDice();
@@ -250,14 +258,54 @@ public class Game implements MenuCallback {
                             } // Ficar sem jogar por um número específico de rodadas
                             if (choosen.getRoundsNotPlay() > 0) {
                                 gameBoard.getPlayers().get(i[0]).setInDetention(choosen.getRoundsNotPlay());
-                            } // Jogar novamente
-                            if (choosen.getPlayAgain()) {
-                                i[0]--;
                             }
                         } 
                         // Se o jogador cair em um campo de propriedade, exibe a propriedade e dá a opção de comprar ou pagar aluguel
                         else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Property")) {
-                            System.out.println("Você caiu em uma propriedade!");
+                            specialFieldsView.addToBoard(gameBoardView.getPanel());
+                            try {Thread.sleep(2500);} catch (InterruptedException e) {e.printStackTrace();}
+
+                            // Configura o listener antes de criar os botões
+                            specialFieldsView.setButtonClickListener(button -> { 
+                                if (button.equals("BUY")) { // Se o jogador escolher comprar a propriedade
+                                    
+                                    // Se a propriedade não tiver dono
+                                    if (((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getOwner() == null) {
+                                        
+                                        // Se o jogador tiver o dinheiro da compra, compra a propriedade
+                                        if (gameBoard.getPlayers().get(i[0]).getMoney() > ((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getBuyValue()) { 
+                                            ((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).setOwner(gameBoard.getPlayers().get(i[0]));
+                                            gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - ((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getBuyValue());
+                                            specialFieldsView.clearPanel();
+                                        // Se ele não tiver o dinheiro da compra não faz nada
+                                        } else { specialFieldsView.clearPanel();}
+
+                                    // Se a propriedade tiver dono e o jogador não o for, desconta o aluguel
+                                    } else if (((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getOwner() != gameBoard.getPlayers().get(i[0])) { 
+                                        gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - ((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getRentValue());
+                                        ((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getOwner().setMoney(((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getOwner().getMoney() + ((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getRentValue());
+                                        specialFieldsView.clearPanel();
+                                    
+                                    // Se a propriedade tiver dono e o jogador for o dono, não faz nada
+                                    } else {specialFieldsView.clearPanel();}
+                                
+                                } else if (button.equals("RENT")) { // Se o jogador escolher pagar o aluguel
+                                    
+                                    // Se a propriedade tiver dono e o jogador não o for, desconta o aluguel
+                                    if (((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getOwner() != null) {
+    
+                                        if (((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getOwner() != gameBoard.getPlayers().get(i[0])) {
+                                            gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - ((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getRentValue());
+                                            ((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getOwner().setMoney(((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getOwner().getMoney() + ((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getRentValue());
+                                            specialFieldsView.clearPanel();
+                                        }
+                                    } else {specialFieldsView.clearPanel();}
+                                }
+                            });                                
+                            specialFieldsView.createPropertyButtons();
+                            specialFieldsView.exhibit(((Property) gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition())).getAppearance());
+                            try {Thread.sleep(10000);} catch (InterruptedException e) {e.printStackTrace();}
+                            specialFieldsView.clearPanel();
                         } 
                         // Se o jogador cair em um campo de pagamento ou recebimento, verifica o tipo e aplica o efeito
                         else if (gameBoard.getField(gameBoard.getPlayers().get(i[0]).getPosition()).getType().equals("Earn")) {
@@ -289,6 +337,10 @@ public class Game implements MenuCallback {
                                     gameBoard.getPlayers().get(i[0]).setInJail(false);
                                     gameBoard.getPlayers().get(i[0]).setMoney(gameBoard.getPlayers().get(i[0]).getMoney() - 2000);
                                     gameBoard.getPlayers().get(i[0]).setInDetention(0);
+                                    specialFieldsView.clearPanel();
+                                } else if (button.equals("NO")) {
+                                    gameBoard.getPlayers().get(i[0]).setInJail(true);
+                                    gameBoard.getPlayers().get(i[0]).setInDetention(5);
                                     specialFieldsView.clearPanel();
                                 } else {
                                     gameBoard.getPlayers().get(i[0]).setInJail(true);

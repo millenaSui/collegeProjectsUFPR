@@ -49,10 +49,11 @@ public class SpecialFieldsView {
     public void setButtonClickListener(ButtonClickListener listener) {
         this.buttonClickListener = listener;
     }
+
     public void createPrisionButtons() {
         panel.setLayout(null);
 
-        JButton buttonYes = new JButton("Yes");
+        JButton buttonYes = new JButton();
         buttonYes.setSize(150, 50);
         buttonYes.setContentAreaFilled(false);
         buttonYes.setBorderPainted(false);
@@ -65,7 +66,7 @@ public class SpecialFieldsView {
             }
         });
 
-        JButton buttonNo = new JButton("No");
+        JButton buttonNo = new JButton();
         buttonNo.setSize(150, 50);
         buttonNo.setContentAreaFilled(false);
         buttonNo.setBorderPainted(false);
@@ -91,6 +92,51 @@ public class SpecialFieldsView {
         panel.add(buttonNo);
 
         panel.repaint();
+    }
+
+    public void createPropertyButtons() {
+        panel.setLayout(null);
+
+        JButton buttonBuy = new JButton();
+        buttonBuy.setSize(205, 70);
+        buttonBuy.setContentAreaFilled(false);
+        buttonBuy.setBorderPainted(false);
+        buttonBuy.setFocusPainted(false);
+        buttonBuy.setOpaque(false);
+        buttonBuy.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        buttonBuy.addActionListener(e -> {
+            if (buttonClickListener != null) {
+                buttonClickListener.onButtonClicked("BUY"); // Chama o listener para o botão "Buy"
+            }
+        });
+
+        JButton buttonAuction = new JButton();
+        buttonAuction.setSize(205, 70);
+        buttonAuction.setContentAreaFilled(false);
+        buttonAuction.setBorderPainted(false);
+        buttonAuction.setFocusPainted(false);
+        buttonAuction.setOpaque(false);
+        buttonAuction.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        buttonAuction.addActionListener(e -> {
+            if (buttonClickListener != null) {
+                buttonClickListener.onButtonClicked("RENT"); // Chama o listener para o botão "Auction"
+            }
+        });
+
+        int panelWidth = panel.getWidth();
+        int panelHeight = panel.getHeight();
+        int buttonWidth = buttonBuy.getWidth();
+        int buttonHeight = buttonBuy.getHeight();
+        int spacing = -12;
+
+        buttonBuy.setLocation((panelWidth - buttonWidth) / 2 + 325, (panelHeight - 2 * buttonHeight - spacing) / 2 + 30);
+        buttonAuction.setLocation((panelWidth - buttonWidth) / 2 + 325, (panelHeight - buttonHeight) / 2 + 40 + buttonHeight + spacing);
+
+        panel.add(buttonBuy);
+        panel.add(buttonAuction);
+
+        panel.repaint();
+
     }
 
     public void clearPanel() {
