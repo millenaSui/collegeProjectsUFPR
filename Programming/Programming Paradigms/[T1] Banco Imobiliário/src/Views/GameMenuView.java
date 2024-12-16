@@ -55,6 +55,22 @@ public class GameMenuView {
             }
         });
 
+        JButton saveButton = new JButton();
+        saveButton.setBounds(1780, 855, 80, 80); // Ajusta o tamanho e posição do botão
+        saveButton.setContentAreaFilled(false); // Remove a área de conteúdo do botão
+        saveButton.setOpaque(false); // Torna o botão opaco para que a cor de fundo seja visível
+        saveButton.setBorderPainted(false); // Remove a borda do botão
+        saveButton.setFocusPainted(false); // Remove o foco pintado do botão
+        saveButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Change cursor to hand
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            callback.onMenuOptionSelected(3); // Informa o controlador
+            }
+        });
+
+        panel.add(saveButton);
+
         JButton exitButton = new JButton();
         exitButton.setBounds(1097, 746, 283, 188);
         exitButton.setContentAreaFilled(false);

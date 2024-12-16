@@ -30,12 +30,16 @@ bancoImobiliario
 │   └───Controllers
 │   │
 │   └───Models
+│   │   │
+│   │   └───Memento
 │   │
 │   └───Views
 │   
-│   Main.java    
+│   Main.java 
+│   
+│   makefile   
 ``` 
-O diretório ``src`` contém o arquivo principal do projeto e todos os seus packages, já os seus subdiretórios ``Content``, ``Controllers``, ``Models`` e ``Views`` são divididos de forma que armazenem, respectivamente, o conteúdo gráfico utilizado para a construção da interface, a classe controladora do projeto, as classes que dispõe dos dados e métodos para manipulá-los e, por fim, as classes utilizadas para apresentação visual dos elementos na interface.    
+O diretório ``src`` contém o arquivo principal do projeto e todos os seus packages, já os seus subdiretórios ``Content``, ``Controllers``, ``Memento``, ``Models`` e ``Views`` são divididos de forma que armazenem, respectivamente, o conteúdo gráfico utilizado para a construção da interface, a classe controladora do projeto, as classes responsáveis pelo gerenciamento de manutenção e recuperação do estado de jogo, as classes que dispõe dos dados e métodos para manipulá-los e, por fim, as classes utilizadas para apresentação visual dos elementos na interface.    
 
 ### Padrões Gang of Four (GoF)
 
